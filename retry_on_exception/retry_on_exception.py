@@ -105,6 +105,7 @@ def retry_on_exception_manual(function,
             tries += 1
             return function(*args, **kwargs)
         except exceptions as e:
+            ic(e)  # need this to see what exception is being retried
             if errno:
                 if not e.errno == errno:  # gonna throw an AttributeError if errno was passed and e does not have it, this is by design
                     raise e
