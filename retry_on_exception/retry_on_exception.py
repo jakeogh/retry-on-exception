@@ -22,12 +22,15 @@ import time
 from functools import wraps  # todo
 from math import inf
 
+from delay_timer import DelayTimer
+
 #import errno as error_number
 
 try:
     from icecream import ic
 except ImportError:
     import sys
+
     def eprint(*args, **kwargs):
         if 'file' in kwargs.keys():
             kwargs.pop('file')
@@ -43,6 +46,10 @@ def retry_on_exception(*,
                        retries=inf,
                        verbose=False,
                        delay_multiplier=0.5,):
+
+    delay_timer = DelayTimer(start=delay,
+                         multiplier=delay_multiplier,
+                         end=359,)
 
     def retry_on_exception_decorator(function):
         @wraps(function)
@@ -72,9 +79,10 @@ def retry_on_exception(*,
                         ic(e, e.errno)
                     else:
                         ic(e)
-                    delay = delay + (delay * delay_multiplier)
-                    ic(delay)
-                    time.sleep(delay)
+                    #delay = delay + (delay * delay_multiplier)
+                    #ic(delay)
+                    #time.sleep(delay)
+                    delay_timer.sleep()
         return retry_on_exception_wrapper
     return retry_on_exception_decorator
 
