@@ -79,6 +79,8 @@ def retry_on_exception(*,
                         ic(e, e.errno)
                     else:
                         ic(e)
+                    for index, arg in enumerate(e.args):
+                        ic(index, arg)
                     #delay = delay + (delay * delay_multiplier)
                     #ic(delay)
                     #time.sleep(delay)
