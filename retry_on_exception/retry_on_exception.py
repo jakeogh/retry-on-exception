@@ -43,13 +43,15 @@ def retry_on_exception(*,
                        kwargs={},
                        args=(),
                        delay=1,
+                       max_delay=360,
                        retries=inf,
                        verbose=False,
                        delay_multiplier=0.5,):
 
     delay_timer = DelayTimer(start=delay,
-                         multiplier=delay_multiplier,
-                         end=359,)
+                             multiplier=delay_multiplier,
+                             end=max_delay,
+                             verbose=verbose,)
 
     def retry_on_exception_decorator(function):
         @wraps(function)
@@ -81,9 +83,6 @@ def retry_on_exception(*,
                         ic(e)
                     for index, arg in enumerate(e.args):
                         ic(index, arg)
-                    #delay = delay + (delay * delay_multiplier)
-                    #ic(delay)
-                    #time.sleep(delay)
                     delay_timer.sleep()
         return retry_on_exception_wrapper
     return retry_on_exception_decorator
