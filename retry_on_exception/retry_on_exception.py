@@ -76,7 +76,8 @@ def retry_on_exception(*,
                         if not e.errno == errno:  # gonna throw an AttributeError if errno was passed and e does not have it, this is by design
                             raise e
                     ic(function)
-                    ic(exceptions)
+                    if verbose:
+                        ic(exceptions)
                     if hasattr(e, 'errno'):
                         ic(e, e.errno)
                     else:
