@@ -102,7 +102,11 @@ def retry_on_exception(*,
                     if in_e_args:
                         if debug:
                             ic(e.args)
-                        if in_e_args not in e.args:
+                        found = False
+                        for arg in e.args:
+                            if in_e_args in arg:
+                                found = True
+                        if not found:
                             raise e
                     ic(function)
                     if verbose:
