@@ -18,6 +18,8 @@
 # pylint: disable=R0916  # Too many boolean expressions in if statement
 
 
+import random
+
 import click
 
 try:
@@ -35,6 +37,18 @@ from retry_on_exception import retry_on_exception, retry_on_exception_manual
 
 def raise_valueerror():
     raise ValueError('try again')
+
+
+@retry_on_exception(exceptions=(ValueError,),
+                    retries=1,)
+@retry_on_exception(exceptions=(TypeError,),
+                    retries=2,)
+def raise_multiple():
+    choice = round(random.random())
+    if choice == 0:
+        raise ValueError
+    if choice == 1:
+        raise TypeError
 
 
 @click.command()
@@ -59,6 +73,8 @@ def cli(ipython,
         thing()
 
     raise_typeerror("1")
+
+    raise_multiple()
 
     if ipython:
         import IPython; IPython.embed()
