@@ -46,6 +46,9 @@ def retry_on_exception(*,
                        delay=1,
                        max_delay=360,
                        retries=inf,
+                       call_function_once=None,
+                       call_function_once_args=(),
+                       call_function_once_kwargs={},
                        verbose=False,
                        delay_multiplier=0.5,):
 
@@ -61,6 +64,8 @@ def retry_on_exception(*,
             if not issubclass(exception, Exception):
                 raise ValueError('exception must be a subclass of Exception, not:', type(exception))
             tries = 0
+            if retries < 1:
+                raise ValueError('retries must be >= 1: retries:', retries)
             while True:
                 if tries > retries:
                     ic(tries, '>', retries, 'breaking')
@@ -88,6 +93,9 @@ def retry_on_exception(*,
                         ic(e)
                     for index, arg in enumerate(e.args):
                         ic(index, arg)
+                    if call_function_once:
+                        call_function_once_result = call_function_once(*call_function_once_args, **call_function_once_kwargs)
+                        ic(call_function_once_result)
                     delay_timer.sleep()
         return retry_on_exception_wrapper
     return retry_on_exception_decorator
