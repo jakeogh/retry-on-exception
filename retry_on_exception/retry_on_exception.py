@@ -118,8 +118,9 @@ def retry_on_exception(*,
                     for index, arg in enumerate(e.args):
                         ic(index, arg)
                     if call_function_once:
-                        call_function_once_result = call_function_once(*call_function_once_args, **call_function_once_kwargs)
-                        ic(call_function_once_result)
+                        if tries == 1:
+                            call_function_once_result = call_function_once(*call_function_once_args, **call_function_once_kwargs)
+                            ic(call_function_once_result)
                     delay_timer.sleep()
                 except Exception as e:
                     if debug:
