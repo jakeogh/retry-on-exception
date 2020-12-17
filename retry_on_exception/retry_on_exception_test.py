@@ -39,9 +39,9 @@ def raise_valueerror():
     raise ValueError('try again')
 
 
-@retry_on_exception(exceptions=(ValueError,),
+@retry_on_exception(exception=ValueError,
                     retries=2,)
-@retry_on_exception(exceptions=(TypeError,),
+@retry_on_exception(exception=TypeError,
                     retries=3,)
 def raise_multiple():
     choice = round(random.random())
@@ -64,11 +64,11 @@ def cli(ipython,
                               kwargs={},
                               args=(),
                               retries=1,
-                              exceptions=(ValueError,),
+                              exception=ValueError,
                               errno=None,
                               verbose=verbose,)
 
-    @retry_on_exception(exceptions=(TypeError,),
+    @retry_on_exception(exception=TypeError,
                         retries=2,)
     def raise_typeerror(thing):
         thing()
