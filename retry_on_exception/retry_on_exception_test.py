@@ -40,11 +40,12 @@ def raise_valueerror():
 
 
 @retry_on_exception(exceptions=(ValueError,),
-                    retries=1,)
-@retry_on_exception(exceptions=(TypeError,),
                     retries=2,)
+@retry_on_exception(exceptions=(TypeError,),
+                    retries=3,)
 def raise_multiple():
     choice = round(random.random())
+    ic(choice)
     if choice == 0:
         raise ValueError
     if choice == 1:
