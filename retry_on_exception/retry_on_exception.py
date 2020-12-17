@@ -67,6 +67,20 @@ def retry_on_exception(*,
             tries = 0
             if retries < 1:
                 raise ValueError('retries must be >= 1: retries:', retries)
+            if debug:
+                ic(exception)
+                ic(errno)
+                ic(in_e_args)
+                ic(kwargs)
+                ic(args)
+                ic(delay)
+                ic(max_delay)
+                ic(retries)
+                ic(call_function_once)
+                ic(call_function_once_args)
+                ic(call_function_once_kwargs)
+                ic(delay_multiplier)
+
             while True:
                 if tries > retries:
                     ic(tries, '>', retries, 'breaking')
@@ -102,6 +116,10 @@ def retry_on_exception(*,
                         call_function_once_result = call_function_once(*call_function_once_args, **call_function_once_kwargs)
                         ic(call_function_once_result)
                     delay_timer.sleep()
+                except Exception as e:
+                    if debug:
+                        ic(e)
+                    raise e
         return retry_on_exception_wrapper
     return retry_on_exception_decorator
 
