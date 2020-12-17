@@ -50,6 +50,7 @@ def retry_on_exception(*,
                        call_function_once_args=(),
                        call_function_once_kwargs={},
                        verbose=False,
+                       debug=False,
                        delay_multiplier=0.5,):
 
     delay_timer = DelayTimer(start=delay,
@@ -78,10 +79,14 @@ def retry_on_exception(*,
                     tries += 1
                     return function(*args, **kwargs)
                 except exception as e:
+                    if debug:
+                        ic(e)
                     if errno:
                         if not e.errno == errno:  # gonna throw an AttributeError if errno was passed and e does not have it, this is by design
                             raise e
                     if in_e_args:
+                        if debug:
+                            ic(e.args)
                         if in_e_args not in e.args:
                             raise e
                     ic(function)
