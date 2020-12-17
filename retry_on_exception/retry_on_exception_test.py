@@ -19,18 +19,20 @@
 
 
 import random
+import sys
 
 import click
+
+
+def eprint(*args, **kwargs):
+    if 'file' in kwargs.keys():
+        kwargs.pop('file')
+    print(*args, file=sys.stderr, **kwargs)
 
 try:
     from icecream import ic
 except ImportError:
-    import sys
-    def eprint(*args, **kwargs):
-        if 'file' in kwargs.keys():
-            kwargs.pop('file')
-        print(*args, file=sys.stderr, **kwargs)
-
+    ic = eprint
 
 from retry_on_exception import retry_on_exception, retry_on_exception_manual
 
