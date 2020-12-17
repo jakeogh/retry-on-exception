@@ -40,7 +40,7 @@ except ImportError:
 def retry_on_exception(*,
                        exception,
                        errno=None,
-                       in_args=None,
+                       in_e_args=None,
                        kwargs={},
                        args=(),
                        delay=1,
@@ -81,8 +81,8 @@ def retry_on_exception(*,
                     if errno:
                         if not e.errno == errno:  # gonna throw an AttributeError if errno was passed and e does not have it, this is by design
                             raise e
-                    if in_args:
-                        if in_args not in e.args:
+                    if in_e_args:
+                        if in_e_args not in e.args:
                             raise e
                     ic(function)
                     if verbose:
