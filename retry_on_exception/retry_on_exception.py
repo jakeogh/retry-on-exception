@@ -69,6 +69,7 @@ def retry_on_exception(*,
                 raise ValueError('retries must be >= 1: retries:', retries)
             if debug:
                 ic(exception)
+                ic(type(exception))
                 ic(errno)
                 ic(in_e_args)
                 ic(kwargs)
@@ -119,6 +120,7 @@ def retry_on_exception(*,
                 except Exception as e:
                     if debug:
                         ic(e)
+                        ic(type(e))
                     raise e
         return retry_on_exception_wrapper
     return retry_on_exception_decorator
