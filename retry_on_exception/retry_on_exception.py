@@ -131,43 +131,43 @@ def retry_on_exception(*,
     return retry_on_exception_decorator
 
 
-def retry_on_exception_manual(function,
-                              *,
-                              exceptions,
-                              errno=None,
-                              kwargs={},
-                              args=(),
-                              delay=1,
-                              retries=inf,
-                              verbose=False,
-                              delay_multiplier=0.5,):
-
-    if not isinstance(exceptions, tuple):
-        raise ValueError('exceptions must be a tuple, not:', type(exceptions))
-    tries = 0
-    while True:
-        if tries > retries:
-            ic(tries, '>', retries, 'breaking')
-            break
-        try:
-            if verbose:
-                ic('calling:', function.__name__)
-                ic(args)
-                ic(kwargs)
-            tries += 1
-            return function(*args, **kwargs)
-        except exceptions as e:
-            ic(e)  # need this to see what exception is being retried
-            if errno:
-                if not e.errno == errno:  # gonna throw an AttributeError if errno was passed and e does not have it, this is by design
-                    raise e
-            ic(function)
-            ic(exceptions)
-            if hasattr(e, 'errno'):
-                ic(e, e.errno)
-            else:
-                ic(e)
-            delay = delay + (delay * delay_multiplier)
-            ic(delay)
-            time.sleep(delay)
+#def retry_on_exception_manual(function,
+#                              *,
+#                              exceptions,
+#                              errno=None,
+#                              kwargs={},
+#                              args=(),
+#                              delay=1,
+#                              retries=inf,
+#                              verbose=False,
+#                              delay_multiplier=0.5,):
+#
+#    if not isinstance(exceptions, tuple):
+#        raise ValueError('exceptions must be a tuple, not:', type(exceptions))
+#    tries = 0
+#    while True:
+#        if tries > retries:
+#            ic(tries, '>', retries, 'breaking')
+#            break
+#        try:
+#            if verbose:
+#                ic('calling:', function.__name__)
+#                ic(args)
+#                ic(kwargs)
+#            tries += 1
+#            return function(*args, **kwargs)
+#        except exceptions as e:
+#            ic(e)  # need this to see what exception is being retried
+#            if errno:
+#                if not e.errno == errno:  # gonna throw an AttributeError if errno was passed and e does not have it, this is by design
+#                    raise e
+#            ic(function)
+#            ic(exceptions)
+#            if hasattr(e, 'errno'):
+#                ic(e, e.errno)
+#            else:
+#                ic(e)
+#            delay = delay + (delay * delay_multiplier)
+#            ic(delay)
+#            time.sleep(delay)
 
