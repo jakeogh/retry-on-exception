@@ -83,12 +83,12 @@ def retry_on_exception(*,
                 ic(delay_multiplier)
 
             raise_next = False
-            ic(raise_next)
+            #ic(raise_next)
             while True:
                 if tries > (retries - 1):
                     ic(tries, '>', retries - 1, 'raising next matching exception:', exception)
                     raise_next = True
-                    ic(raise_next)
+                    #ic(raise_next)
                 try:
                     if verbose:
                         ic('calling:', function.__name__)
@@ -112,7 +112,7 @@ def retry_on_exception(*,
                         if not found:
                             raise e
                     if raise_next:
-                        ic(raise_next)
+                        #ic(raise_next)
                         ic('raising:', e)
                         raise e
                     ic(function)
