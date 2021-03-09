@@ -46,15 +46,15 @@ def retry_on_exception(*,
                        kwargs_add_on_retry={},
                        args_add_on_retry=(),
                        kwargs_extract_from_exception=(),
-                       delay=1,
-                       max_delay=60,
+                       delay: float = 1.0,
+                       max_delay: float = 60.0,
                        retries=inf,
                        call_function_once=None,
                        call_function_once_args=(),
                        call_function_once_kwargs={},
-                       verbose=False,
-                       debug=False,
-                       delay_multiplier=0.5,):
+                       verbose: bool = False,
+                       debug: bool = False,
+                       delay_multiplier: float = 0.5,):
 
     delay_timer = DelayTimer(start=delay,
                              multiplier=delay_multiplier,
@@ -117,8 +117,11 @@ def retry_on_exception(*,
                             ic(e.args)
                         found = False
                         for arg in e.args:
-                            if in_e_args in arg:
-                                found = True
+                            try:
+                                if in_e_args in arg:
+                                    found = True
+                            except TypeError:  # TypeError: argument of type 'MaxRetryError' is not iterable
+                                pass
                         if not found:
                             raise e
 
