@@ -18,23 +18,25 @@
 # pylint: disable=R0916  # Too many boolean expressions in if statement
 
 
-import time
+import sys
+#import time
 from functools import wraps  # todo
 from math import inf
 
+#import errno as error_number
 from delay_timer import DelayTimer
 
-#import errno as error_number
+
+def eprint(*args, **kwargs):
+    if 'file' in kwargs.keys():
+        kwargs.pop('file')
+    print(*args, file=sys.stderr, **kwargs)
+
 
 try:
     from icecream import ic
 except ImportError:
-    import sys
-
-    def eprint(*args, **kwargs):
-        if 'file' in kwargs.keys():
-            kwargs.pop('file')
-        print(*args, file=sys.stderr, **kwargs)
+    ic = eprint
 
 
 def retry_on_exception(*,
@@ -48,13 +50,13 @@ def retry_on_exception(*,
                        kwargs_extract_from_exception=(),
                        delay: float = 1.0,
                        max_delay: float = 60.0,
-                       retries=inf,
+                       retries: float = inf,
                        call_function_once=None,
                        call_function_once_args=(),
                        call_function_once_kwargs={},
                        verbose: bool = False,
                        debug: bool = False,
-                       delay_multiplier: float = 0.5,):
+                       delay_multiplier: float = 0.6,):
 
     delay_timer = DelayTimer(start=delay,
                              multiplier=delay_multiplier,
