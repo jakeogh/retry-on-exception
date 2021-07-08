@@ -22,20 +22,10 @@ import sys
 from functools import wraps  # todo
 from math import inf
 
+from asserttool import eprint
+from asserttool import ic
 #import errno as error_number
 from delay_timer import DelayTimer
-
-
-def eprint(*args, **kwargs):
-    if 'file' in kwargs.keys():
-        kwargs.pop('file')
-    print(*args, file=sys.stderr, **kwargs)
-
-
-try:
-    from icecream import ic
-except ImportError:
-    ic = eprint
 
 
 def retry_on_exception(*,
