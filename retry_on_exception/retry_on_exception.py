@@ -18,7 +18,7 @@
 # pylint: disable=R0916  # Too many boolean expressions in if statement
 
 
-import sys
+#import sys
 from functools import wraps  # todo
 from math import inf
 
@@ -29,13 +29,13 @@ from delay_timer import DelayTimer
 
 
 def retry_on_exception(*,
-                       exception,
+                       exception: Exception,
                        errno=None,
                        in_e_args=None,
-                       kwargs={},
-                       args=(),
+                       kwargs: dict = {},
+                       args: tuple = (),
                        kwargs_add_on_retry={},
-                       args_add_on_retry=(),
+                       args_add_on_retry: tuple = (),
                        kwargs_extract_from_exception=(),
                        delay: float = 1.0,
                        max_delay: float = 60.0,

@@ -22,19 +22,12 @@ import random
 import sys
 
 import click
+from asserttool import eprint
+from asserttool import ic
 
+from retry_on_exception import retry_on_exception
 
-def eprint(*args, **kwargs):
-    if 'file' in kwargs.keys():
-        kwargs.pop('file')
-    print(*args, file=sys.stderr, **kwargs)
-
-try:
-    from icecream import ic
-except ImportError:
-    ic = eprint
-
-from retry_on_exception import retry_on_exception, retry_on_exception_manual
+#from retry_on_exception import retry_on_exception_manual
 
 
 def raise_valueerror():
@@ -62,13 +55,13 @@ def cli(ipython,
         verbose,
         debug,):
 
-    retry_on_exception_manual(function=raise_valueerror,
-                              kwargs={},
-                              args=(),
-                              retries=1,
-                              exception=ValueError,
-                              errno=None,
-                              verbose=verbose,)
+    #retry_on_exception_manual(function=raise_valueerror,
+    #                          kwargs={},
+    #                          args=(),
+    #                          retries=1,
+    #                          exception=ValueError,
+    #                          errno=None,
+    #                          verbose=verbose,)
 
     @retry_on_exception(exception=TypeError,
                         retries=2,)
