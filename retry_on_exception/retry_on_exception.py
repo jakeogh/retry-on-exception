@@ -103,7 +103,7 @@ def retry_on_exception(*,
                         ic(e)
                     if errno:
                         # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
-                        if not e.errno == errno:  # "Exception" has no attribute "errno"  [attr-defined]
+                        if not e.errno == errno:  # mypy: "Exception" has no attribute "errno"  [attr-defined]
                             raise e
                     if in_e_args:
                         if debug:
