@@ -98,11 +98,12 @@ def retry_on_exception(*,
                         return function(*args, **kwargs, **kwargs_extracted_from_exception)
                     else:
                         return function(*args, **kwargs)
-                except exception: Type[Exception] as e:  # invalid syntax  [syntax]
+                except exception as e:
                     if debug:
                         ic(e)
                     if errno:
-                        if not e.errno == errno:  # gonna throw an AttributeError if errno was passed and e does not have it, this is by design
+                        # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
+                        if not e.errno == errno:  # "Exception" has no attribute "errno"  [attr-defined]
                             raise e
                     if in_e_args:
                         if debug:
