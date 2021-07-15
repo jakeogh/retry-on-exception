@@ -147,8 +147,8 @@ def retry_on_exception(*,
                     if verbose:
                         ic(exception)
 
-                    #if hasattr(e, 'errno'):
-                    if cast(OSError, e).errno:
+                    if hasattr(e, 'errno'):
+                    #if cast(OSError, e).errno:  # need typing.Protocol?
                         ic(e, e.errno)  # mypy: "Exception" has no attribute "errno"  [attr-defined]
 
                     else:
