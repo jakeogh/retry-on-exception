@@ -109,8 +109,9 @@ def retry_on_exception(*,
                     #if isinstance(e, OSError):  # mypy is fine with this, but it's using isinstance()
                     #    if not e.errno == errno:
                     #        raise e
-                    if not cast(OSError, e).errno == errno:  # best way?
-                        raise e
+                    if errno:
+                        if not cast(OSError, e).errno == errno:  # best way?
+                            raise e
 
 
                     if in_e_args:
