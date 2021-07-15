@@ -22,6 +22,7 @@
 from functools import wraps  # todo
 from math import inf
 from typing import Type
+from typing import cast
 
 from asserttool import eprint
 from asserttool import ic
@@ -101,11 +102,17 @@ def retry_on_exception(*,
                 except exception as e:
                     if debug:
                         ic(e)
+
                     # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
-                    if isinstance(e, OSError):
-                    #if errno:
-                        if not e.errno == errno:
-                            raise e
+                    # seemingly, not actually raising AttributeError yet though... TODO
+                    #if errno:  # mypy not happy
+                    #if isinstance(e, OSError):  # mypy is fine with this, but it's using isinstance()
+                    #    if not e.errno == errno:
+                    #        raise e
+                    if not cast(OSError, e).errno == errno:  # best way?
+                        raise e
+
+
                     if in_e_args:
                         if debug:
                             ic(e.args)
@@ -114,7 +121,7 @@ def retry_on_exception(*,
                             try:
                                 if in_e_args in arg:
                                     found = True
-                            except TypeError:  # TypeError: argument of type 'MaxRetryError' is not iterable
+                            except TypeError:  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
                                 pass
                         if not found:
                             raise e
@@ -139,8 +146,11 @@ def retry_on_exception(*,
                     ic(function)
                     if verbose:
                         ic(exception)
-                    if hasattr(e, 'errno'):
-                        ic(e, e.errno)
+
+                    #if hasattr(e, 'errno'):
+                    if cast(OSError, e).errno:
+                        ic(e, e.errno)  # mypy: "Exception" has no attribute "errno"  [attr-defined]
+
                     else:
                         ic(e)
                     for index, arg in enumerate(e.args):
