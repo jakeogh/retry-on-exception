@@ -21,6 +21,7 @@
 #import sys
 from functools import wraps  # todo
 from math import inf
+from typing import Type
 
 from asserttool import eprint
 from asserttool import ic
@@ -29,7 +30,7 @@ from delay_timer import DelayTimer
 
 
 def retry_on_exception(*,
-                       exception: Exception,
+                       exception: Type[Exception],
                        errno=None,
                        in_e_args=None,
                        kwargs: dict = {},

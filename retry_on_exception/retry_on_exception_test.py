@@ -19,13 +19,16 @@
 
 
 import random
-import sys
 
 import click
 from asserttool import eprint
 from asserttool import ic
 
 from retry_on_exception import retry_on_exception
+
+#import sys
+
+
 
 #from retry_on_exception import retry_on_exception_manual
 
@@ -34,7 +37,7 @@ def raise_valueerror():
     raise ValueError('try again')
 
 
-@retry_on_exception(exception=ValueError,
+@retry_on_exception(exception=ValueError, # Argument "exception" to "retry_on_exception" has incompatible type "Type[ValueError]"; expected "Exception"  [arg-type]
                     retries=2,)
 @retry_on_exception(exception=TypeError,
                     retries=3,)
