@@ -98,7 +98,7 @@ def retry_on_exception(*,
                         return function(*args, **kwargs, **kwargs_extracted_from_exception)
                     else:
                         return function(*args, **kwargs)
-                except exception as e:
+                except exception: Type[Exception] as e:
                     if debug:
                         ic(e)
                     if errno:
