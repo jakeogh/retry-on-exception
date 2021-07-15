@@ -37,7 +37,7 @@ def raise_valueerror():
     raise ValueError('try again')
 
 
-@retry_on_exception(exception=ValueError, # Argument "exception" to "retry_on_exception" has incompatible type "Type[ValueError]"; expected "Exception"  [arg-type]
+@retry_on_exception(exception=ValueError,
                     retries=2,)
 @retry_on_exception(exception=TypeError,
                     retries=3,)
