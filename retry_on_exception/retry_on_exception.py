@@ -101,9 +101,10 @@ def retry_on_exception(*,
                 except exception as e:
                     if debug:
                         ic(e)
-                    if errno:
-                        # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
-                        if not e.errno == errno:  # mypy: "Exception" has no attribute "errno"  [attr-defined]
+                    # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
+                    if isinstance(e, OSError):
+                    #if errno:
+                        if not e.errno == errno:
                             raise e
                     if in_e_args:
                         if debug:
