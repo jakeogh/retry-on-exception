@@ -114,7 +114,6 @@ def retry_on_exception(*,
                         if not cast(OSError, e).errno == errno:  # best way?
                             raise e
 
-
                     if in_e_args:
                         if debug:
                             ic(e.args)
