@@ -18,6 +18,7 @@
 # pylint: disable=R0916  # Too many boolean expressions in if statement
 
 
+import traceback
 #import sys
 from functools import wraps  # todo
 from math import inf
@@ -156,6 +157,7 @@ def retry_on_exception(*,
                         ic(e)
                     for index, arg in enumerate(e.args):
                         ic(index, arg)
+                        traceback.print_exc()
                     if call_function_once:
                         if tries == 1:
                             call_function_once_result = call_function_once(*call_function_once_args, **call_function_once_kwargs)
@@ -168,45 +170,3 @@ def retry_on_exception(*,
                     raise e
         return retry_on_exception_wrapper
     return retry_on_exception_decorator
-
-
-#def retry_on_exception_manual(function,
-#                              *,
-#                              exceptions,
-#                              errno=None,
-#                              kwargs={},
-#                              args=(),
-#                              delay=1,
-#                              retries=inf,
-#                              verbose=False,
-#                              delay_multiplier=0.5,):
-#
-#    if not isinstance(exceptions, tuple):
-#        raise ValueError('exceptions must be a tuple, not:', type(exceptions))
-#    tries = 0
-#    while True:
-#        if tries > retries:
-#            ic(tries, '>', retries, 'breaking')
-#            break
-#        try:
-#            if verbose:
-#                ic('calling:', function.__name__)
-#                ic(args)
-#                ic(kwargs)
-#            tries += 1
-#            return function(*args, **kwargs)
-#        except exceptions as e:
-#            ic(e)  # need this to see what exception is being retried
-#            if errno:
-#                if not e.errno == errno:  # gonna throw an AttributeError if errno was passed and e does not have it, this is by design
-#                    raise e
-#            ic(function)
-#            ic(exceptions)
-#            if hasattr(e, 'errno'):
-#                ic(e, e.errno)
-#            else:
-#                ic(e)
-#            delay = delay + (delay * delay_multiplier)
-#            ic(delay)
-#            time.sleep(delay)
-
