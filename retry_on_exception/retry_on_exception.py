@@ -25,10 +25,10 @@ from math import inf
 from typing import Type
 from typing import cast
 
-from asserttool import eprint
 from asserttool import ic
 #import errno as error_number
 from delay_timer import DelayTimer
+from eprint import eprint
 
 
 def retry_on_exception(*,
