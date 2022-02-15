@@ -21,16 +21,10 @@
 import random
 
 import click
-from asserttool import eprint
 from asserttool import ic
+from typimg import Union
 
 from retry_on_exception import retry_on_exception
-
-#import sys
-
-
-
-#from retry_on_exception import retry_on_exception_manual
 
 
 def raise_valueerror():
@@ -53,10 +47,9 @@ def raise_multiple():
 @click.command()
 @click.option('--verbose', is_flag=True)
 @click.option('--ipython', is_flag=True)
-@click.option('--debug', is_flag=True)
-def cli(ipython,
-        verbose,
-        debug,):
+def cli(ipython: bool,
+        verbose: Union[bool, int, float],
+        ):
 
     #retry_on_exception_manual(function=raise_valueerror,
     #                          kwargs={},
