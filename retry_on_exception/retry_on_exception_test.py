@@ -19,10 +19,10 @@
 
 
 import random
+from typing import Union
 
 import click
 from asserttool import ic
-from typimg import Union
 
 from retry_on_exception import retry_on_exception
 
@@ -65,7 +65,6 @@ def cli(ipython: bool,
         thing()
 
     raise_typeerror("1")
-
     raise_multiple()
 
     if ipython:
