@@ -152,7 +152,8 @@ def retry_on_exception(
                             try:
                                 if isinstance(arg, in_e_args_isinstance):
                                     found = True
-                                    ic('found:', arg, in_e_args_isinstance)
+                                    #if verbose:
+                                    #    ic('found:', arg, in_e_args_isinstance)
                             except TypeError:  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
                                 pass
                         if not found:
