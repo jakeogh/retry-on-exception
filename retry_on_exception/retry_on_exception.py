@@ -77,6 +77,7 @@ def retry_on_exception(
                 ic(type(exception))
                 ic(errno)
                 ic(in_e_args)
+                ic(in_e_args_isinstance)
                 ic(kwargs)
                 ic(args)
                 ic(delay)
