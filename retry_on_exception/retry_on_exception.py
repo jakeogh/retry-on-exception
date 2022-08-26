@@ -136,6 +136,8 @@ def retry_on_exception(
                             ic(e.args)
                         found = False
                         for arg in e.args:
+                            if verbose == inf:
+                                ic(arg)
                             try:
                                 if in_e_args in arg:
                                     found = True
