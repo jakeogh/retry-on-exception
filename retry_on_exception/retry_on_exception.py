@@ -47,7 +47,7 @@ def retry_on_exception(
     delay: float = 1.0,
     max_delay: float = 60.0,
     retries: float = inf,
-    call_function_once=None,
+    call_function_once=None,  # this could block, like wait_for_ping_default_gateway()
     call_function_once_args=(),
     call_function_once_kwargs={},
     verbose: bool | int | float = False,
@@ -153,7 +153,7 @@ def retry_on_exception(
                                 if isinstance(arg, in_e_args_isinstance):
                                     found = True
                                     if verbose == inf:
-                                        ic('found:', arg, in_e_args_isinstance)
+                                        ic("found:", arg, in_e_args_isinstance)
                             except TypeError:  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
                                 pass
                         if not found:
