@@ -139,7 +139,7 @@ def retry_on_exception(
                             if verbose == inf:
                                 ic(arg)
                             try:
-                                if in_e_args in arg:
+                                if in_e_args in repr(arg):  # hacky, should recurse
                                     found = True
                             except TypeError:  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
                                 pass
