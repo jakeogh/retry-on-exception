@@ -2,14 +2,15 @@
 
 import sys
 
-from setuptools import find_packages, setup
+from setuptools import find_packages
+from setuptools import setup
 
 import fastentrypoints
 
 if not sys.version_info[0] == 3:
-    sys.exit("Python 3 is required. Use: \'python3 setup.py install\'")
+    sys.exit("Python 3 is required. Use: 'python3 setup.py install'")
 
-dependencies = ["icecream", "click"]
+dependencies = ["delay-timer @ git+https://git@github.com/jakeogh/delay-timer"]
 
 config = {
     "version": "0.1",
@@ -20,7 +21,7 @@ config = {
     "author_email": "github.com@v6y.net",
     "description": "Short explination of what it does _here_",
     "long_description": __doc__,
-    "packages": find_packages(exclude=['tests']),
+    "packages": find_packages(exclude=["tests"]),
     "include_package_data": True,
     "zip_safe": False,
     "platforms": "any",
