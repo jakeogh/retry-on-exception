@@ -28,8 +28,7 @@ from typing import cast
 
 from asserttool import ic
 from delay_timer import DelayTimer
-
-# from eprint import eprint
+from eprint import eprint
 
 # import errno as error_number
 
@@ -185,7 +184,8 @@ def retry_on_exception(
                                 )
                                 raise e
                     # by here, the exception is valid to be caught
-                    ic("\nfound valid Exception:", f"{exception}")
+                    eprint()
+                    ic("found valid Exception:", f"{exception}")
                     ic(
                         f"{function=}",
                         f"{exception=}",
