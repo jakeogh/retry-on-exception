@@ -73,8 +73,8 @@ def retry_on_exception(
             tries = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
+            ic(f"{function=}", f"{exception=}")
             if verbose == inf:
-                ic(exception)
                 ic(type(exception))
                 ic(errno)
                 ic(in_e_args)
