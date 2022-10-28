@@ -107,10 +107,9 @@ def retry_on_exception(
                         ">",
                         retries - 1,
                         "raising next matching exception:",
-                        exception,
                     )
                     raise_next = True
-                    # ic(raise_next)
+                    ic(f"{raise_next=}")
                 try:
                     if verbose:
                         ic("calling:", function.__name__)
@@ -198,7 +197,7 @@ def retry_on_exception(
 
                     if raise_next:
                         # ic(raise_next)
-                        ic(raise_next, "raising:", e)
+                        ic(f"{raise_next=}", "raising:", f"{e=}")
                         raise e
 
                     if hasattr(e, "errno"):
