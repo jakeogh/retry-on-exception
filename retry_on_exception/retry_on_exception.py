@@ -77,8 +77,6 @@ def retry_on_exception(
                 f"{function=}",
                 f"{exception=}",
                 f"{type(exception)}",
-                f"{kwargs}",
-                f"{args}",
             )
             if verbose == inf:
                 ic(errno)
@@ -94,6 +92,11 @@ def retry_on_exception(
                 ic(call_function_once_args)
                 ic(call_function_once_kwargs)
                 ic(delay_multiplier)
+            if verbose == inf:
+                ic(
+                    f"{kwargs}",
+                    f"{args}",
+                )
 
             raise_next = False
             kwargs_extracted_from_exception = {}
