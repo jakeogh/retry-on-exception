@@ -186,6 +186,14 @@ def retry_on_exception(
                                 raise e
                     # by here, the exception is valid to be caught
                     ic("found valid Exception:", f"{exception}")
+                    ic(
+                        f"{function=}",
+                        f"{exception=}",
+                        f"{type(exception)}",
+                        f"{retries=}",
+                        f"{in_e_args=}",
+                        f"{in_e_args_isinstance=}",
+                    )
 
                     if raise_next:
                         # ic(raise_next)
