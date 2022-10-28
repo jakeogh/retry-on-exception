@@ -77,14 +77,14 @@ def retry_on_exception(
                 f"{function=}",
                 f"{exception=}",
                 f"{type(exception)}",
+                f"{retries=}",
+                f"{in_e_args=}",
+                f"{in_e_args_isinstance=}",
             )
             if verbose == inf:
                 ic(errno)
-                ic(in_e_args)
-                ic(in_e_args_isinstance)
                 ic(delay)
                 ic(max_delay)
-                ic(retries)
                 ic(kwargs_add_on_retry)
                 ic(args_add_on_retry)
                 ic(kwargs_extract_from_exception)
@@ -115,8 +115,8 @@ def retry_on_exception(
                 try:
                     if verbose:
                         ic("calling:", function.__name__)
-                        ic(args)
-                        ic(kwargs)
+                        ic(f"{args=}")
+                        ic(f"{kwargs=}")
                     tries += 1
                     if kwargs_extracted_from_exception:
                         return function(
