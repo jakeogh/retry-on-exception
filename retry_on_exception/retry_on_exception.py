@@ -219,6 +219,7 @@ def retry_on_exception(
                                 *call_function_once_args, **call_function_once_kwargs
                             )
                             ic(call_function_once_result)
+                    ic(tries, retries)
                     delay_timer.sleep()
                 except Exception as e:
                     if verbose == inf:
