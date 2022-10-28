@@ -185,7 +185,7 @@ def retry_on_exception(
                                 )
                                 raise e
                     # by here, the exception is valid to be caught
-                    ic("found valid Exception:", f"{exception}")
+                    ic("\nfound valid Exception:", f"{exception}")
                     ic(
                         f"{function=}",
                         f"{exception=}",
