@@ -190,6 +190,7 @@ def retry_on_exception(
                         f"{function=}",
                         f"{exception=}",
                         f"{type(exception)}",
+                        f"{tries=}",
                         f"{retries=}",
                         f"{in_e_args=}",
                         f"{in_e_args_isinstance=}",
@@ -199,8 +200,6 @@ def retry_on_exception(
                         # ic(raise_next)
                         ic(raise_next, "raising:", e)
                         raise e
-                    if verbose:
-                        ic(exception)
 
                     if hasattr(e, "errno"):
                         # if cast(OSError, e).errno:  # need typing.Protocol?
@@ -210,6 +209,7 @@ def retry_on_exception(
 
                     else:
                         ic(f"{e=}")
+
                     for index, arg in enumerate(e.args):
                         ic(index, arg)
                         traceback.print_exc()
