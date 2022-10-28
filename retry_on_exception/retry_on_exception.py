@@ -185,6 +185,7 @@ def retry_on_exception(
                                 )
                                 raise e
                     # by here, the exception is valid to be caught
+                    ic("found valid Exception:", f"{exception}")
 
                     if raise_next:
                         # ic(raise_next)
@@ -196,11 +197,11 @@ def retry_on_exception(
                     if hasattr(e, "errno"):
                         # if cast(OSError, e).errno:  # need typing.Protocol?
                         ic(
-                            e, e.errno
+                            f"{e=}", f"{e.errno=}"
                         )  # mypy: "Exception" has no attribute "errno"  [attr-defined]
 
                     else:
-                        ic(e)
+                        ic(f"{e=}")
                     for index, arg in enumerate(e.args):
                         ic(index, arg)
                         traceback.print_exc()
