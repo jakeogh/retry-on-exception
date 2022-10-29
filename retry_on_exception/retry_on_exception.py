@@ -51,7 +51,7 @@ def retry_on_exception(
     call_function_once_args=(),
     call_function_once_kwargs={},
     verbose: bool | int | float = False,
-    delay_multiplier: float = 1.5,
+    delay_multiplier: float = 1.3,
 ):
 
     delay_timer = DelayTimer(
