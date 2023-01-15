@@ -186,7 +186,7 @@ def retry_on_exception(
                     # by here, the exception is valid to be caught
                     _ic_state = ic.enabled
                     ic.enable()
-                    epprint("\nfound valid exception: {exception=}")
+                    epprint(f"\nfound valid exception: {exception=}")
                     ic(f"{exception}")
                     ic(
                         f"{function=}",
