@@ -54,7 +54,6 @@ def retry_on_exception(
     verbose: bool | int | float = False,
     delay_multiplier: float = 1.3,
 ):
-
     delay_timer = DelayTimer(
         start=delay,
         multiplier=delay_multiplier,
@@ -147,7 +146,9 @@ def retry_on_exception(
                             try:
                                 if in_e_args in repr(arg):  # hacky, should recurse
                                     found = True
-                            except TypeError:  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
+                            except (
+                                TypeError
+                            ):  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
                                 pass
                         if not found:
                             raise e
@@ -162,7 +163,9 @@ def retry_on_exception(
                                     found = True
                                     if verbose == inf:
                                         ic("found:", arg, in_e_args_isinstance)
-                            except TypeError:  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
+                            except (
+                                TypeError
+                            ):  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
                                 pass
                         if not found:
                             raise e
