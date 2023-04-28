@@ -27,6 +27,7 @@ from typing import Type
 from typing import cast
 
 from asserttool import ic
+from asserttool import icp
 from delay_timer import DelayTimer
 from epprint import epprint
 from eprint import eprint
@@ -190,8 +191,8 @@ def retry_on_exception(
                     _ic_state = ic.enabled
                     ic.enable()
                     epprint(f"\nfound valid exception: {exception=}")
-                    ic(f"{exception}")
-                    ic(
+                    icp(f"{exception}")
+                    icp(
                         f"{function=}",
                         f"{exception=}",
                         f"{type(exception)}",
