@@ -75,36 +75,36 @@ def retry_on_exception(
             tries = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
-            # if verbose:
-            icp(
-                f"{function=}",
-                f"{exception=}",
-                f"{type(exception)}",
-                f"{retries=}",
-                f"{in_e_args=}",
-                f"{in_e_args_isinstance=}",
-                f"{errno=}",
-                f"{delay=}",
-                f"{max_delay=}",
-                f"{kwargs_add_on_retry=}",
-                f"{args_add_on_retry=}",
-                f"{kwargs_extract_from_exception=}",
-                f"{call_function_once=}",
-                f"{call_function_once_args=}",
-                f"{call_function_once_kwargs=}",
-                f"{delay_multiplier=}",
-            )
-            icp(
-                f"{kwargs}",
-                f"{args}",
-            )
+            if verbose:
+                icp(
+                    f"{function=}",
+                    f"{exception=}",
+                    f"{type(exception)}",
+                    f"{retries=}",
+                    f"{in_e_args=}",
+                    f"{in_e_args_isinstance=}",
+                    f"{errno=}",
+                    f"{delay=}",
+                    f"{max_delay=}",
+                    f"{kwargs_add_on_retry=}",
+                    f"{args_add_on_retry=}",
+                    f"{kwargs_extract_from_exception=}",
+                    f"{call_function_once=}",
+                    f"{call_function_once_args=}",
+                    f"{call_function_once_kwargs=}",
+                    f"{delay_multiplier=}",
+                )
+                icp(
+                    f"{kwargs}",
+                    f"{args}",
+                )
 
             raise_next = False
             kwargs_extracted_from_exception = {}
             # ic(raise_next)
             while True:
                 if tries > (retries - 1):
-                    ic(
+                    icp(
                         tries,
                         ">",
                         retries - 1,
@@ -168,6 +168,7 @@ def retry_on_exception(
                             ):  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
                                 pass
                         if not found:
+                            icp("exception not found, raising", e)
                             raise e
 
                     if kwargs_extract_from_exception:
