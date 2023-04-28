@@ -75,30 +75,29 @@ def retry_on_exception(
             tries = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
-            if verbose:
-                ic(
-                    f"{function=}",
-                    f"{exception=}",
-                    f"{type(exception)}",
-                    f"{retries=}",
-                    f"{in_e_args=}",
-                    f"{in_e_args_isinstance=}",
-                    f"{errno=}",
-                    f"{delay=}",
-                    f"{max_delay=}",
-                    f"{kwargs_add_on_retry=}",
-                    f"{args_add_on_retry=}",
-                    f"{kwargs_extract_from_exception=}",
-                    f"{call_function_once=}",
-                    f"{call_function_once_args=}",
-                    f"{call_function_once_kwargs=}",
-                    f"{delay_multiplier=}",
-                )
-            if verbose == inf:
-                ic(
-                    f"{kwargs}",
-                    f"{args}",
-                )
+            # if verbose:
+            icp(
+                f"{function=}",
+                f"{exception=}",
+                f"{type(exception)}",
+                f"{retries=}",
+                f"{in_e_args=}",
+                f"{in_e_args_isinstance=}",
+                f"{errno=}",
+                f"{delay=}",
+                f"{max_delay=}",
+                f"{kwargs_add_on_retry=}",
+                f"{args_add_on_retry=}",
+                f"{kwargs_extract_from_exception=}",
+                f"{call_function_once=}",
+                f"{call_function_once_args=}",
+                f"{call_function_once_kwargs=}",
+                f"{delay_multiplier=}",
+            )
+            icp(
+                f"{kwargs}",
+                f"{args}",
+            )
 
             raise_next = False
             kwargs_extracted_from_exception = {}
@@ -126,8 +125,7 @@ def retry_on_exception(
                     else:
                         return function(*args, **kwargs)
                 except exception as e:
-                    if verbose == inf:
-                        ic(e)
+                    icp(e)
 
                     # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
                     # seemingly, not actually raising AttributeError yet though... TODO
@@ -140,8 +138,7 @@ def retry_on_exception(
                             raise e
 
                     if in_e_args:
-                        if verbose == inf:
-                            ic(e.args)
+                        icp(e.args)
                         found = False
                         for arg in e.args:
                             if verbose == inf:
@@ -181,7 +178,7 @@ def retry_on_exception(
                                         kwargs_extracted_from_exception[kw] = arg[kw]
                         for kw in kwargs_extract_from_exception:
                             if kw not in kwargs_extracted_from_exception.keys():
-                                ic(
+                                icp(
                                     kw,
                                     "not found in",
                                     e.args,
@@ -190,7 +187,7 @@ def retry_on_exception(
                                 )
                                 raise e
                     # by here, the exception is valid to be caught
-                    _ic_state = ic.enabled
+                    # _ic_state = ic.enabled
                     ic.enable()
                     epprint(f"\nfound valid exception: {exception=}")
                     icp(f"{exception}")
@@ -203,8 +200,8 @@ def retry_on_exception(
                         f"{in_e_args=}",
                         f"{in_e_args_isinstance=}",
                     )
-                    if not _ic_state:
-                        ic.disable()
+                    # if not _ic_state:
+                    #    ic.disable()
 
                     if raise_next:
                         # ic(raise_next)
