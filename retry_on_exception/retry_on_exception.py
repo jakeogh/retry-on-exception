@@ -101,7 +101,7 @@ def retry_on_exception(
 
             raise_next = False
             kwargs_extracted_from_exception = {}
-            icp(raise_next)
+            ic(raise_next)
             while True:
                 ic(tries, retries)
                 if tries > (retries - 1):
@@ -127,7 +127,7 @@ def retry_on_exception(
                     ic("returning", function)
                     return function(*args, **kwargs)
                 except exception as e:
-                    icp(e)
+                    ic(e)
 
                     # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
                     # seemingly, not actually raising AttributeError yet though... TODO
