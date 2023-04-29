@@ -61,8 +61,8 @@ def retry_on_exception(
         end=max_delay,
         verbose=verbose,
     )
-    verbose = True
-    ic.enable()
+    # verbose = True
+    # ic.enable()
 
     def retry_on_exception_decorator(function):
         @wraps(function)
