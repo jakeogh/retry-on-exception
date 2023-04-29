@@ -101,8 +101,9 @@ def retry_on_exception(
 
             raise_next = False
             kwargs_extracted_from_exception = {}
-            # ic(raise_next)
+            icp(raise_next)
             while True:
+                icp(tries, retries)
                 if tries > (retries - 1):
                     icp(
                         tries,
@@ -113,17 +114,18 @@ def retry_on_exception(
                     raise_next = True
                     ic(f"{raise_next=}")
                 try:
-                    if verbose:
-                        ic("calling:", function.__name__)
-                        ic(f"{args=}")
-                        ic(f"{kwargs=}")
+                    # if verbose:
+                    icp("calling:", function.__name__)
+                    icp(f"{args=}")
+                    icp(f"{kwargs=}")
                     tries += 1
                     if kwargs_extracted_from_exception:
+                        icp("returning", function, kwargs_extracted_from_exception)
                         return function(
                             *args, **kwargs, **kwargs_extracted_from_exception
                         )
-                    else:
-                        return function(*args, **kwargs)
+                    icp("returning", function)
+                    return function(*args, **kwargs)
                 except exception as e:
                     icp(e)
 
