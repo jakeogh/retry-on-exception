@@ -103,7 +103,7 @@ def retry_on_exception(
             kwargs_extracted_from_exception = {}
             icp(raise_next)
             while True:
-                icp(tries, retries)
+                ic(tries, retries)
                 if tries > (retries - 1):
                     icp(
                         tries,
@@ -114,17 +114,17 @@ def retry_on_exception(
                     raise_next = True
                     ic(f"{raise_next=}")
                 try:
-                    # if verbose:
-                    icp("calling:", function.__name__)
-                    icp(f"{args=}")
-                    icp(f"{kwargs=}")
+                    if verbose:
+                        icp("calling:", function.__name__)
+                        icp(f"{args=}")
+                        icp(f"{kwargs=}")
                     tries += 1
                     if kwargs_extracted_from_exception:
-                        icp("returning", function, kwargs_extracted_from_exception)
+                        ic("returning", function, kwargs_extracted_from_exception)
                         return function(
                             *args, **kwargs, **kwargs_extracted_from_exception
                         )
-                    icp("returning", function)
+                    ic("returning", function)
                     return function(*args, **kwargs)
                 except exception as e:
                     icp(e)
@@ -190,11 +190,11 @@ def retry_on_exception(
                                 )
                                 raise e
                     # by here, the exception is valid to be caught
-                    # _ic_state = ic.enabled
+                    _ic_state = ic.enabled
                     ic.enable()
                     epprint(f"\nfound valid exception: {exception=}")
-                    icp(f"{exception}")
-                    icp(
+                    ic(f"{exception}")
+                    ic(
                         f"{function=}",
                         f"{exception=}",
                         f"{type(exception)}",
@@ -203,8 +203,8 @@ def retry_on_exception(
                         f"{in_e_args=}",
                         f"{in_e_args_isinstance=}",
                     )
-                    # if not _ic_state:
-                    #    ic.disable()
+                    if not _ic_state:
+                        ic.disable()
 
                     if raise_next:
                         # ic(raise_next)
