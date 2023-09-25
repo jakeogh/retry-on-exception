@@ -115,15 +115,17 @@ def retry_on_exception(
                     raise_next = True
                     ic(f"{raise_next=}")
                 try:
-                    ic("calling:", function.__name__)
-                    ic(args, kwargs)
+                    if gvd:
+                        ic("calling:", function.__name__)
+                        ic(args, kwargs)
                     tries += 1
                     if kwargs_extracted_from_exception:
                         ic("returning", function, kwargs_extracted_from_exception)
                         return function(
                             *args, **kwargs, **kwargs_extracted_from_exception
                         )
-                    ic("returning", function)
+                    if gvd:
+                        ic("returning", function)
                     return function(*args, **kwargs)
                 except exception as e:
                     ic(e)
