@@ -31,6 +31,7 @@ from asserttool import icp
 from delay_timer import DelayTimer
 from epprint import epprint
 from eprint import eprint
+from globalverbose import gvd
 
 # import errno as error_number
 
@@ -52,7 +53,7 @@ def retry_on_exception(
     call_function_once=None,  # this could block, like wait_for_ping_default_gateway()
     call_function_once_args=(),
     call_function_once_kwargs={},
-    verbose: bool | int | float = False,
+    verbose: bool = False,
     delay_multiplier: float = 1.3,
 ):
     delay_timer = DelayTimer(
@@ -75,35 +76,33 @@ def retry_on_exception(
             tries = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
-            if verbose:
-                icp(
-                    f"{function=}",
-                    f"{exception=}",
-                    f"{type(exception)}",
-                    f"{retries=}",
-                    f"{in_e_args=}",
-                    f"{in_e_args_isinstance=}",
-                    f"{errno=}",
-                    f"{delay=}",
-                    f"{max_delay=}",
-                    f"{kwargs_add_on_retry=}",
-                    f"{args_add_on_retry=}",
-                    f"{kwargs_extract_from_exception=}",
-                    f"{call_function_once=}",
-                    f"{call_function_once_args=}",
-                    f"{call_function_once_kwargs=}",
-                    f"{delay_multiplier=}",
-                )
-                icp(
-                    f"{kwargs}",
-                    f"{args}",
-                )
+            ic(
+                f"{function=}",
+                f"{exception=}",
+                f"{type(exception)}",
+                f"{retries=}",
+                f"{in_e_args=}",
+                f"{in_e_args_isinstance=}",
+                f"{errno=}",
+                f"{delay=}",
+                f"{max_delay=}",
+                f"{kwargs_add_on_retry=}",
+                f"{args_add_on_retry=}",
+                f"{kwargs_extract_from_exception=}",
+                f"{call_function_once=}",
+                f"{call_function_once_args=}",
+                f"{call_function_once_kwargs=}",
+                f"{delay_multiplier=}",
+            )
+            ic(
+                f"{kwargs}",
+                f"{args}",
+            )
 
             raise_next = False
             kwargs_extracted_from_exception = {}
-            ic(raise_next)
             while True:
-                ic(tries, retries)
+                ic(tries, retries, raise_next)
                 if tries > (retries - 1):
                     icp(
                         tries,
@@ -114,10 +113,9 @@ def retry_on_exception(
                     raise_next = True
                     ic(f"{raise_next=}")
                 try:
-                    if verbose:
-                        icp("calling:", function.__name__)
-                        icp(f"{args=}")
-                        icp(f"{kwargs=}")
+                    ic("calling:", function.__name__)
+                    ic(f"{args=}")
+                    ic(f"{kwargs=}")
                     tries += 1
                     if kwargs_extracted_from_exception:
                         ic("returning", function, kwargs_extracted_from_exception)
@@ -143,8 +141,8 @@ def retry_on_exception(
                         icp(e.args)
                         found = False
                         for arg in e.args:
-                            if verbose == inf:
-                                ic(arg)
+                            if gvd:
+                                icp(arg)
                             try:
                                 if in_e_args in repr(arg):  # hacky, should recurse
                                     found = True
@@ -156,14 +154,14 @@ def retry_on_exception(
                             raise e
 
                     if in_e_args_isinstance:
-                        if verbose == inf:
+                        if gvd:
                             ic(e.args)
                         found = False
                         for arg in e.args:
                             try:
                                 if isinstance(arg, in_e_args_isinstance):
                                     found = True
-                                    if verbose == inf:
+                                    if gvd:
                                         ic("found:", arg, in_e_args_isinstance)
                             except (
                                 TypeError
@@ -233,7 +231,7 @@ def retry_on_exception(
                     if tries < retries:
                         delay_timer.sleep()
                 except Exception as e:
-                    if verbose == inf:
+                    if gvd:
                         ic(e)
                         ic(type(e))
                     raise e
