@@ -76,33 +76,35 @@ def retry_on_exception(
             tries = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
-            ic(
-                f"{function=}",
-                f"{exception=}",
-                f"{type(exception)}",
-                f"{retries=}",
-                f"{in_e_args=}",
-                f"{in_e_args_isinstance=}",
-                f"{errno=}",
-                f"{delay=}",
-                f"{max_delay=}",
-                f"{kwargs_add_on_retry=}",
-                f"{args_add_on_retry=}",
-                f"{kwargs_extract_from_exception=}",
-                f"{call_function_once=}",
-                f"{call_function_once_args=}",
-                f"{call_function_once_kwargs=}",
-                f"{delay_multiplier=}",
-            )
-            ic(
-                f"{kwargs}",
-                f"{args}",
-            )
+            if gvd:
+                ic(
+                    kwargs,
+                    args,
+                )
+                ic(
+                    function,
+                    exception,
+                    type(exception),
+                    retries,
+                    in_e_args,
+                    in_e_args_isinstance,
+                    errno,
+                    delay,
+                    max_delay,
+                    kwargs_add_on_retry,
+                    args_add_on_retry,
+                    kwargs_extract_from_exception,
+                    call_function_once,
+                    call_function_once_args,
+                    call_function_once_kwargs,
+                    delay_multiplier,
+                )
 
             raise_next = False
             kwargs_extracted_from_exception = {}
             while True:
-                ic(tries, retries, raise_next)
+                if gvd:
+                    ic(tries, retries, raise_next)
                 if tries > (retries - 1):
                     icp(
                         tries,
@@ -114,8 +116,7 @@ def retry_on_exception(
                     ic(f"{raise_next=}")
                 try:
                     ic("calling:", function.__name__)
-                    ic(f"{args=}")
-                    ic(f"{kwargs=}")
+                    ic(args, kwargs)
                     tries += 1
                     if kwargs_extracted_from_exception:
                         ic("returning", function, kwargs_extracted_from_exception)
