@@ -131,7 +131,7 @@ def retry_on_exception(
                     if gvd:
                         icp("returning", function)
                     return function(*args, **kwargs)
-                except exception as e:
+                except Exception as e:
                     icp(e)
 
                     # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
@@ -143,6 +143,7 @@ def retry_on_exception(
                     if errno:
                         icp(errno, e.errno)
                         if not cast(OSError, e).errno == errno:  # best way?
+                            icp("raising:", e)
                             raise e
 
                     if in_e_args:
