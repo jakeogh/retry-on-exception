@@ -81,11 +81,11 @@ def retry_on_exception(
             verbose = True
             gvd.enable()
             if gvd:
-                ic(
+                icp(
                     kwargs,
                     args,
                 )
-                ic(
+                icp(
                     function,
                     exception,
                     type(exception),
@@ -108,7 +108,7 @@ def retry_on_exception(
             kwargs_extracted_from_exception = {}
             while True:
                 if gvd:
-                    ic(tries, retries, raise_next)
+                    icp(tries, retries, raise_next)
                 if tries > (retries - 1):
                     icp(
                         tries,
@@ -120,8 +120,8 @@ def retry_on_exception(
                     ic(f"{raise_next=}")
                 try:
                     if gvd:
-                        ic("calling:", function.__name__)
-                        ic(args, kwargs)
+                        icp("calling:", function.__name__)
+                        icp(args, kwargs)
                     tries += 1
                     if kwargs_extracted_from_exception:
                         ic("returning", function, kwargs_extracted_from_exception)
@@ -129,7 +129,7 @@ def retry_on_exception(
                             *args, **kwargs, **kwargs_extracted_from_exception
                         )
                     if gvd:
-                        ic("returning", function)
+                        icp("returning", function)
                     return function(*args, **kwargs)
                 except exception as e:
                     ic(e)
@@ -162,14 +162,14 @@ def retry_on_exception(
 
                     if in_e_args_isinstance:
                         if gvd:
-                            ic(e.args)
+                            icp(e.args)
                         found = False
                         for arg in e.args:
                             try:
                                 if isinstance(arg, in_e_args_isinstance):
                                     found = True
                                     if gvd:
-                                        ic("found:", arg, in_e_args_isinstance)
+                                        icp("found:", arg, in_e_args_isinstance)
                             except (
                                 TypeError
                             ):  # TODO check for: TypeError: argument of type 'MaxRetryError' is not iterable
@@ -195,11 +195,11 @@ def retry_on_exception(
                                 )
                                 raise e
                     # by here, the exception is valid to be caught
-                    _ic_state = ic.enabled
-                    ic.enable()
+                    # _ic_state = ic.enabled
+                    # ic.enable()
                     epprint(f"\nfound valid exception: {exception=}")
-                    ic(f"{exception}")
-                    ic(
+                    icp(f"{exception}")
+                    icp(
                         f"{function=}",
                         f"{exception=}",
                         f"{type(exception)}",
@@ -208,22 +208,22 @@ def retry_on_exception(
                         f"{in_e_args=}",
                         f"{in_e_args_isinstance=}",
                     )
-                    if not _ic_state:
-                        ic.disable()
+                    # if not _ic_state:
+                    #    ic.disable()
 
                     if raise_next:
                         # ic(raise_next)
-                        ic(f"{raise_next=}", "raising:", f"{e=}")
+                        icp(f"{raise_next=}", "raising:", f"{e=}")
                         raise e
 
                     if hasattr(e, "errno"):
                         # if cast(OSError, e).errno:  # need typing.Protocol?
-                        ic(
+                        icp(
                             f"{e=}", f"{e.errno=}"
                         )  # mypy: "Exception" has no attribute "errno"  [attr-defined]
 
                     else:
-                        ic(f"{e=}")
+                        icp(f"{e=}")
 
                     for index, arg in enumerate(e.args):
                         ic(index, arg)
@@ -239,8 +239,8 @@ def retry_on_exception(
                         delay_timer.sleep()
                 except Exception as e:
                     if gvd:
-                        ic(e)
-                        ic(type(e))
+                        icp(e)
+                        icp(type(e))
                     raise e
 
         return retry_on_exception_wrapper
