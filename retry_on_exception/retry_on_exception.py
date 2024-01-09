@@ -132,7 +132,7 @@ def retry_on_exception(
                         icp("returning", function)
                     return function(*args, **kwargs)
                 except exception as e:
-                    ic(e)
+                    icp(e)
 
                     # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
                     # seemingly, not actually raising AttributeError yet though... TODO
@@ -141,6 +141,7 @@ def retry_on_exception(
                     #    if not e.errno == errno:
                     #        raise e
                     if errno:
+                        icp(errno, e.errno)
                         if not cast(OSError, e).errno == errno:  # best way?
                             raise e
 
@@ -226,7 +227,7 @@ def retry_on_exception(
                         icp(f"{e=}")
 
                     for index, arg in enumerate(e.args):
-                        ic(index, arg)
+                        icp(index, arg)
                         traceback.print_exc()
                     if call_function_once:
                         if tries == 1:
