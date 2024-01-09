@@ -78,6 +78,8 @@ def retry_on_exception(
             tries = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
+            verbose = True
+            gvd.enable()
             if gvd:
                 ic(
                     kwargs,
