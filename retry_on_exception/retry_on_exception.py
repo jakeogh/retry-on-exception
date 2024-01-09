@@ -89,6 +89,7 @@ def retry_on_exception(
                     function,
                     exception,
                     type(exception),
+                    tries,
                     retries,
                     in_e_args,
                     in_e_args_isinstance,
