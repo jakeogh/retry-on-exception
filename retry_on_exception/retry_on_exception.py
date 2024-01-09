@@ -64,6 +64,7 @@ def retry_on_exception(
     )
     verbose = True
     ic.enable()
+    gvd.enable()
 
     def retry_on_exception_decorator(function):
         @wraps(function)
