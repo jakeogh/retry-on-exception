@@ -62,8 +62,8 @@ def retry_on_exception(
         end=max_delay,
         verbose=verbose,
     )
-    verbose = True
-    ic.enable()
+    # verbose = True
+    # ic.enable()
     gvd.enable()
     icp(exception, errno)
 
