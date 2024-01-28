@@ -143,9 +143,10 @@ def retry_on_exception(
                     #        raise e
                     if errno:
                         icp(errno, e)
+                        icp(dir(e))
                         if hasattr(e, "errno"):
                             icp(errno, e.errno)
-                            if not cast(OSError, e).errno == errno:  # best way?
+                            if not (cast(OSError, e).errno == errno):  # best way?
                                 icp("raising:", e)
                                 raise e
 
