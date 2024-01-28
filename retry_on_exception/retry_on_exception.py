@@ -62,10 +62,10 @@ def retry_on_exception(
         end=max_delay,
         verbose=verbose,
     )
-    verbose = True
-    ic.enable()
-    gvd.enable()
-    icp(exception, errno)
+    # verbose = True
+    # ic.enable()
+    # gvd.enable()
+    # icp(exception, errno)
 
     def retry_on_exception_decorator(function):
         @wraps(function)
@@ -78,8 +78,8 @@ def retry_on_exception(
             tries = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
-            verbose = True
-            gvd.enable()
+            # verbose = True
+            # gvd.enable()
             if gvd:
                 icp(
                     kwargs,
@@ -142,10 +142,10 @@ def retry_on_exception(
                     #    if not e.errno == errno:
                     #        raise e
                     if errno:
-                        icp(errno, e)
-                        icp(dir(e))
+                        # icp(errno, e)
+                        # icp(dir(e))
                         if hasattr(e, "errno"):
-                            icp(errno, e.errno)
+                            # icp(errno, e.errno)
                             if not (cast(OSError, e).errno == errno):  # best way?
                                 icp("raising:", e)
                                 raise e
@@ -153,7 +153,7 @@ def retry_on_exception(
                             raise e
 
                     if in_e_args:
-                        icp(e.args)
+                        # icp(e.args)
                         found = False
                         for arg in e.args:
                             if gvd:
