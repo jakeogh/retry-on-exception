@@ -142,7 +142,7 @@ def retry_on_exception(
                     #    if not e.errno == errno:
                     #        raise e
                     if errno:
-                        icp(errno)
+                        icp(errno, e)
                         if hasattr(e, "errno"):
                             icp(errno, e.errno)
                             if not cast(OSError, e).errno == errno:  # best way?
