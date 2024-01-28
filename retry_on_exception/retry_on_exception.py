@@ -149,6 +149,8 @@ def retry_on_exception(
                             if not (cast(OSError, e).errno == errno):  # best way?
                                 icp("raising:", e)
                                 raise e
+                        else:  # exception does not match, raise it
+                            raise e
 
                     if in_e_args:
                         icp(e.args)
