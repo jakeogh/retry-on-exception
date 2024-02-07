@@ -136,7 +136,7 @@ def retry_on_exception(
                     icp(e)
                     icp(type(e))
                     icp(exception)
-                    if type(e) is type(exception):
+                    if type(e) is not type(exception):
                         raise e
 
                     # if isinstance(e, OSError):  # mypy is fine with this, but it's using isinstance()
