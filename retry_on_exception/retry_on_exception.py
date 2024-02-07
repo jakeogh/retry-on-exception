@@ -132,12 +132,11 @@ def retry_on_exception(
                     if gvd:
                         icp("returning", function)
                     return function(*args, **kwargs)
-                except Exception as e:
+                except Exception as e:  # bug, not checking against decorated exception
                     icp(e)
+                    icp(type(e))
+                    icp(exception)
 
-                    # deliberately about to raise an AttributeError if errno was passed and e does not have it, this is by design
-                    # seemingly, not actually raising AttributeError yet though... TODO
-                    # if errno:  # mypy not happy
                     # if isinstance(e, OSError):  # mypy is fine with this, but it's using isinstance()
                     #    if not e.errno == errno:
                     #        raise e
