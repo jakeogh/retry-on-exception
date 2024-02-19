@@ -132,7 +132,8 @@ def retry_on_exception(
                     if gvd:
                         icp("returning", function)
                     return function(*args, **kwargs)
-                except Exception as e:  # bug, not checking against decorated exception
+                # except Exception as e:  # bug, not checking against decorated exception
+                except exception as e:  # bug, not checking against decorated exception
                     icp(type(e), e)
                     icp(e == exception)
                     icp("expected exception:", exception)
