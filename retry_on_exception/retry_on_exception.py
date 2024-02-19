@@ -137,18 +137,8 @@ def retry_on_exception(
                     icp(type(e), exception, e)
                     if e != exception:
                         raise e
-                    icp("expected exception:", exception)
-                    # if type(e) is not type(exception):  # both are 'type'
-                    #    raise e
-
-                    # if isinstance(e, OSError):  # mypy is fine with this, but it's using isinstance()
-                    #    if not e.errno == errno:
-                    #        raise e
                     if errno:
-                        # icp(errno, e)
-                        # icp(dir(e))
                         if hasattr(e, "errno"):
-                            # icp(errno, e.errno)
                             if not (cast(OSError, e).errno == errno):  # best way?
                                 icp("raising:", e)
                                 raise e
