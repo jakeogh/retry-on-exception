@@ -132,13 +132,14 @@ def retry_on_exception(
                     if gvd:
                         icp("returning", function)
                     return function(*args, **kwargs)
-                # except Exception as e:  # bug, not checking against decorated exception
-                except exception as e:  # bug, not checking against decorated exception
-                    icp(type(e), e)
-                    icp(e == exception)
-                    icp("expected exception:", exception)
-                    if type(e) is not type(exception):
+                # except exception as e:  # FileNotFoundError gets caught by OSError
+                except Exception as e:  # bug, not checking against decorated exception
+                    icp(type(e), exception, e)
+                    if e != exception:
                         raise e
+                    icp("expected exception:", exception)
+                    # if type(e) is not type(exception):  # both are 'type'
+                    #    raise e
 
                     # if isinstance(e, OSError):  # mypy is fine with this, but it's using isinstance()
                     #    if not e.errno == errno:
