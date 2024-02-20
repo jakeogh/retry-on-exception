@@ -133,8 +133,10 @@ def retry_on_exception(
                         icp("returning", function)
                     return function(*args, **kwargs)
                 # except exception as e:  # FileNotFoundError gets caught by OSError
-                except Exception as e:  # bug, not checking against decorated exception
-                    icp(type(e), exception, e)
+                except (
+                    Exception
+                ) as e:  # oldbug, was not checking against decorated exception (fixed below)
+                    # icp(type(e), exception, e)
                     if e != exception:
                         raise e
                     if errno:
