@@ -136,7 +136,7 @@ def retry_on_exception(
                 except (
                     Exception
                 ) as e:  # oldbug, was not checking against decorated exception (fixed below)
-                    # icp(type(e), exception, e)
+                    icp(type(e), e, exception)
                     if e != exception:
                         raise e
                     if errno:
