@@ -136,7 +136,14 @@ def retry_on_exception(
                 except (
                     Exception
                 ) as e:  # oldbug, was not checking against decorated exception (fixed below)
-                    icp(e, exception, isinstance(e, exception), e == exception)
+                    icp(
+                        e,
+                        exception,
+                        isinstance(e, exception),
+                        e == exception,
+                        type(e),
+                        type(exception),
+                    )
                     if not isinstance(e, exception):
                         if not isinstance(e, FileExistsError):
                             icp(type(e), e, exception)
