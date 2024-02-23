@@ -151,13 +151,13 @@ def retry_on_exception(
                     if errno:
                         if hasattr(e, "errno"):
                             if not (cast(OSError, e).errno == errno):  # best way?
-                                icp(
-                                    cast(OSError, e).errno == errno,
-                                    e.errno,
-                                    errno,
-                                    "raising:",
-                                    e,
-                                )
+                                # icp(
+                                #    cast(OSError, e).errno == errno,
+                                #    e.errno,
+                                #    errno,
+                                #    "raising:",
+                                #    e,
+                                # )
                                 raise e
                         else:  # exception does not match, raise it
                             raise e
@@ -215,17 +215,17 @@ def retry_on_exception(
                     # by here, the exception is valid to be caught
                     # _ic_state = ic.enabled
                     # ic.enable()
-                    epprint(f"found valid exception: {exception=} [e=]")
-                    icp(f"{exception}")
-                    icp(
-                        f"{function=}",
-                        f"{exception=}",
-                        f"{type(exception)}",
-                        f"{tries=}",
-                        f"{retries=}",
-                        f"{in_e_args=}",
-                        f"{in_e_args_isinstance=}",
-                    )
+                    # epprint(f"found valid exception: {exception=} [e=]")
+                    # icp(f"{exception}")
+                    # icp(
+                    #    f"{function=}",
+                    #    f"{exception=}",
+                    #    f"{type(exception)}",
+                    #    f"{tries=}",
+                    #    f"{retries=}",
+                    #    f"{in_e_args=}",
+                    #    f"{in_e_args_isinstance=}",
+                    # )
                     # if not _ic_state:
                     #    ic.disable()
 
