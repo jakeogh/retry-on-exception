@@ -144,9 +144,9 @@ def retry_on_exception(
                         type(e),
                         type(exception),
                     )
-                    if not isinstance(e, exception):
-                        if not isinstance(e, FileExistsError):
-                            icp(type(e), e, exception)
+                    if not type(e) is exception:
+                        # if not isinstance(e, FileExistsError):
+                        icp("about to raise e", type(e), e, exception)
                         raise e
                     if errno:
                         if hasattr(e, "errno"):
