@@ -68,6 +68,8 @@ def retry_on_exception(
     # icp(exception, errno)
 
     def retry_on_exception_decorator(function):
+        icp(f"@wraps({function=})")
+
         @wraps(function)
         def retry_on_exception_wrapper(*args, **kwargs):
             nonlocal delay
@@ -82,13 +84,11 @@ def retry_on_exception(
             # gvd.enable()
             if gvd:
                 icp(
-                    kwargs,
-                    args,
-                )
-                icp(
-                    function,
                     exception,
                     type(exception),
+                    kwargs,
+                    args,
+                    function,
                     tries,
                     retries,
                     in_e_args,
@@ -120,9 +120,6 @@ def retry_on_exception(
                     raise_next = True
                     ic(f"{raise_next=}")
                 try:
-                    if gvd:
-                        icp("calling:", function.__name__)
-                        icp(args, kwargs)
                     tries += 1
                     if kwargs_extracted_from_exception:
                         ic("returning", function, kwargs_extracted_from_exception)
@@ -130,7 +127,8 @@ def retry_on_exception(
                             *args, **kwargs, **kwargs_extracted_from_exception
                         )
                     if gvd:
-                        icp("returning", function)
+                        icp("calling and returning:", function.__name__)
+                        icp(args, kwargs)
                     return function(*args, **kwargs)
                 # except exception as e:  # FileNotFoundError gets caught by OSError
                 # oldbug, was not checking against decorated exception (fixed below)
