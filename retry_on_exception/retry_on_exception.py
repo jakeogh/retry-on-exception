@@ -29,7 +29,6 @@ from typing import cast
 from asserttool import ic
 from asserttool import icp
 from delay_timer import DelayTimer
-from eprint import eprint
 from globalverbose import gvd
 
 # import errno as error_number
