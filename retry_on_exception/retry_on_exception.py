@@ -134,6 +134,7 @@ def retry_on_exception(
                 # oldbug, was not checking against decorated exception (fixed below)
                 # if exception is OSError, and e is FileNotFoundError, this will still catch, so a second check is needed
                 except exception as e:
+                    icp(exception, e)
                     # icp(
                     #    e,
                     #    exception,
