@@ -62,7 +62,7 @@ def retry_on_exception(
     )
 
     def retry_on_exception_decorator(function):
-        icp(f"@wraps({function=})")
+        ic(f"@wraps({function=})")
 
         @wraps(function)
         def retry_on_exception_wrapper(*args, **kwargs):
