@@ -29,7 +29,6 @@ from typing import cast
 from asserttool import ic
 from asserttool import icp
 from delay_timer import DelayTimer
-from epprint import epprint
 from eprint import eprint
 from globalverbose import gvd
 
@@ -62,10 +61,6 @@ def retry_on_exception(
         end=max_delay,
         verbose=verbose,
     )
-    # verbose = True
-    # ic.enable()
-    # gvd.enable()
-    # icp(exception, errno)
 
     def retry_on_exception_decorator(function):
         icp(f"@wraps({function=})")
@@ -81,7 +76,6 @@ def retry_on_exception(
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
             # verbose = True
-            gvd.enable()
             if gvd:
                 icp(
                     exception,
