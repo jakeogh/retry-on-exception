@@ -77,7 +77,7 @@ def retry_on_exception(
             assert not gvd
             assert not ic.enabled
             if gvd:
-                icp(
+                ic(
                     exception,
                     type(exception),
                     kwargs,
