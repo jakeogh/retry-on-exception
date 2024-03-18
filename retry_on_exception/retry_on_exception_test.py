@@ -17,12 +17,13 @@
 # pylint: disable=W0201  # attribute defined outside __init__
 # pylint: disable=R0916  # Too many boolean expressions in if statement
 
+from __future__ import annotations
 
 import random
 from typing import Union
 
 import click
-from asserttool import ic
+from asserttool import icp
 
 from retry_on_exception import retry_on_exception
 
@@ -31,13 +32,13 @@ def raise_valueerror():
     raise ValueError('try again')
 
 
-@retry_on_exception(exception=ValueError,
-                    retries=2,)
+#@retry_on_exception(exception=ValueError,
+#                    retries=2,)
 @retry_on_exception(exception=TypeError,
                     retries=3,)
 def raise_multiple():
     choice = round(random.random())
-    ic(choice)
+    print(choice)
     if choice == 0:
         raise ValueError
     if choice == 1:
@@ -48,7 +49,7 @@ def raise_multiple():
 @click.option('--verbose', is_flag=True)
 @click.option('--ipython', is_flag=True)
 def cli(ipython: bool,
-        verbose: Union[bool, int, float],
+        verbose: bool = False,
         ):
 
     #retry_on_exception_manual(function=raise_valueerror,
