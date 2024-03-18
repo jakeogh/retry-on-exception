@@ -81,7 +81,7 @@ def retry_on_exception(
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
             # verbose = True
-            # gvd.enable()
+            gvd.enable()
             if gvd:
                 icp(
                     exception,
@@ -255,9 +255,8 @@ def retry_on_exception(
                     if tries < retries:
                         delay_timer.sleep()
                 except Exception as e:
-                    if gvd:
-                        icp(e)
-                        icp(type(e))
+                    icp(e)
+                    icp(type(e))
                     raise e
 
         return retry_on_exception_wrapper
