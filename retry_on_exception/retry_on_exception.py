@@ -128,14 +128,6 @@ def retry_on_exception(
                 # if exception is OSError, and e is FileNotFoundError, this will still catch, so a second check is needed
                 except exception as e:
                     icp(exception, e)
-                    # icp(
-                    #    e,
-                    #    exception,
-                    #    isinstance(e, exception),
-                    #    e == exception,
-                    #    type(e),
-                    #    type(exception),
-                    # )
                     if not type(e) is exception:
                         # if not isinstance(e, FileExistsError):
                         # icp("about to raise e", type(e), e, exception)
