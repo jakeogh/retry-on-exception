@@ -59,7 +59,6 @@ def retry_on_exception(
         start=delay,
         multiplier=delay_multiplier,
         end=max_delay,
-        verbose=verbose,
     )
 
     def retry_on_exception_decorator(function):
@@ -75,7 +74,8 @@ def retry_on_exception(
             tries = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
-            # verbose = True
+            assert not gvd
+            assert not ic.enabled
             if gvd:
                 icp(
                     exception,
@@ -205,22 +205,6 @@ def retry_on_exception(
                                     e,
                                 )
                                 raise e
-                    # by here, the exception is valid to be caught
-                    # _ic_state = ic.enabled
-                    # ic.enable()
-                    # epprint(f"found valid exception: {exception=} [e=]")
-                    # icp(f"{exception}")
-                    # icp(
-                    #    f"{function=}",
-                    #    f"{exception=}",
-                    #    f"{type(exception)}",
-                    #    f"{tries=}",
-                    #    f"{retries=}",
-                    #    f"{in_e_args=}",
-                    #    f"{in_e_args_isinstance=}",
-                    # )
-                    # if not _ic_state:
-                    #    ic.disable()
 
                     if raise_next:
                         # ic(raise_next)
