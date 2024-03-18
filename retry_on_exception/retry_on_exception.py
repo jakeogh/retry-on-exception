@@ -61,6 +61,7 @@ def retry_on_exception(
     )
 
     def retry_on_exception_decorator(function):
+        assert not ic.enabled
         ic(f"@wraps({function=})")
 
         @wraps(function)
