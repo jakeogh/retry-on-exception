@@ -51,9 +51,11 @@ def retry_on_exception(
     call_function_once=None,  # this could block, like wait_for_ping_default_gateway()
     call_function_once_args=(),
     call_function_once_kwargs={},
-    verbose: bool = False,
     delay_multiplier: float = 1.3,
+    verbose: bool = False,
 ):
+    if not verbose:
+        ic.disable()
     delay_timer = DelayTimer(
         start=delay,
         multiplier=delay_multiplier,
