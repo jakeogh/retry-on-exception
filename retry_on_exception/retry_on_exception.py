@@ -27,6 +27,7 @@ signal(SIGPIPE, SIG_DFL)
 
 
 def eprint(*args, **kwargs) -> None:
+    return
     try:
         kwargs.pop("file")
     except KeyError:
