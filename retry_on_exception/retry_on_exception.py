@@ -16,7 +16,6 @@ from typing import Type
 from asserttool import icp
 from delay_timer import DelayTimer
 
-# from typing import cast
 # import traceback
 
 logging.basicConfig(level=logging.INFO)
