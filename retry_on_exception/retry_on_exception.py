@@ -174,7 +174,9 @@ def retry_on_exception(
                     raise e
 
                 if delay_timer:
-                    _eprint(f"{function=}", f"{exception=}")
+                    _eprint(
+                        f"{function=}", f"{exception=}", f"{errno=}", f"{in_e_args=}"
+                    )
                     delay_timer.sleep()
 
         return retry_on_exception_wrapper
