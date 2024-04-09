@@ -25,13 +25,17 @@ logging.basicConfig(level=logging.INFO)
 signal(SIGPIPE, SIG_DFL)
 
 
-def eprint(*args, **kwargs) -> None:
-    return
+def _eprint(*args, **kwargs) -> None:
     try:
         kwargs.pop("file")
     except KeyError:
         pass
     print(*args, file=sys.stderr, **kwargs)
+
+
+def eprint(*args, **kwargs) -> None:
+    return
+    _eprint(*args, **kwargs)
 
 
 def retry_on_exception(
@@ -170,6 +174,7 @@ def retry_on_exception(
                     raise e
 
                 if delay_timer:
+                    _eprint(f"{function=}", "{exception=}")
                     delay_timer.sleep()
 
         return retry_on_exception_wrapper
