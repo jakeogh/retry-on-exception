@@ -83,6 +83,7 @@ def retry_on_exception(
                 f"{errno=}",
                 f"{in_e_args=}",
                 f"{in_e_args_isinstance=}",
+                f"{cancel_retry_function=}",
             )
 
             while True:
