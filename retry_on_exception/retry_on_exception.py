@@ -11,6 +11,7 @@ from math import inf
 from signal import SIG_DFL
 from signal import SIGPIPE
 from signal import signal
+from typing import Callable
 from typing import Type
 
 from asserttool import icp
@@ -50,6 +51,7 @@ def retry_on_exception(
     errno: int | None = None,
     in_e_args: str | None = None,
     in_e_args_isinstance: type | None = None,
+    cancel_retry_function: Callable | None = None,
 ):
     delay_timer: DelayTimer | None = None
     if initial_delay > 0:
@@ -168,6 +170,16 @@ def retry_on_exception(
                     # for index, arg in enumerate(e.args):
                     #    eprint(f"while True: {index=}", f"{arg=}")
                     #    # traceback.print_exc()
+
+                    # by here, a matching exception, e exists
+                    # if cancel_retry_function() returns True, then raise e (so do not retry the function call again)
+                    if cancel_retry_function:
+                        _result = cancel_retry_function()
+                        if _result:
+                            eprint(
+                                f"cancel_retry_function() returned {_result=}, raising {e=}"
+                            )
+                            raise e
 
                 except Exception as e:
                     eprint(f"while True: (uncaught exception) {e=} {type(e)}")
