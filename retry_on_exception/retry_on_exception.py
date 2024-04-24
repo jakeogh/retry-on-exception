@@ -36,7 +36,7 @@ def _eprint(*args, **kwargs) -> None:
 
 # comment out return to enable debug output
 def eprint(*args, **kwargs) -> None:
-    return
+    # return
     _eprint(*args, **kwargs)
 
 
