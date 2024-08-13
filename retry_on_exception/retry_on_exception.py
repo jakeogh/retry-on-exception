@@ -6,12 +6,12 @@ from __future__ import annotations
 
 import logging
 import sys
+from collections.abc import Callable
 from functools import wraps  # todo
 from math import inf
 from signal import SIG_DFL
 from signal import SIGPIPE
 from signal import signal
-from typing import Callable
 from typing import Type
 
 from asserttool import icp
@@ -53,6 +53,9 @@ def retry_on_exception(
     in_e_args: str | None = None,
     in_e_args_isinstance: type | None = None,
     cancel_retry_function: Callable | None = None,
+    call_function_once=None,  # this could block, like wait_for_ping_default_gateway()
+    call_function_once_args=(),
+    call_function_once_kwargs={},
 ):
     delay_timer: DelayTimer | None = None
     if initial_delay > 0:
@@ -182,6 +185,13 @@ def retry_on_exception(
                                 f"cancel_retry_function() returned {_result=}, raising {e=}"
                             )
                             raise e
+
+                    if call_function_once:
+                        if retry_number == 1:
+                            call_function_once_result = call_function_once(
+                                *call_function_once_args, **call_function_once_kwargs
+                            )
+                            eprint(f"{call_function_once_result=}")
 
                 except Exception as e:
                     eprint(f"while True: (uncaught exception) {e=} {type(e)}")
