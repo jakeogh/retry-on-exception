@@ -12,7 +12,6 @@ from math import inf
 from signal import SIG_DFL
 from signal import SIGPIPE
 from signal import signal
-from typing import Type
 
 from asserttool import icp
 from delay_timer import DelayTimer
@@ -42,7 +41,7 @@ def eprint(*args, **kwargs) -> None:
 
 def retry_on_exception(
     *,
-    exception: Type[Exception],
+    exception: type[Exception],
     kwargs: dict = {},
     args: tuple = (),
     retries: float = inf,
@@ -75,6 +74,7 @@ def retry_on_exception(
             retry_number = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
+            _eprint(f"retry_on_exception() {function=} {exception=}")
             eprint(
                 f"retry_on_exception() {function=}",
                 f"{exception=}",
