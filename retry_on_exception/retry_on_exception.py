@@ -74,7 +74,8 @@ def retry_on_exception(
             retry_number = 0
             if retries < 1:
                 raise ValueError("retries must be >= 1: retries:", retries)
-            _eprint(f"retry_on_exception() {function=} {exception=}")
+            # this will print on each application of the decorator if its enabled
+            # _eprint(f"retry_on_exception() {function=} {exception=}")
             eprint(
                 f"retry_on_exception() {function=}",
                 f"{exception=}",
@@ -106,7 +107,7 @@ def retry_on_exception(
                 # oldbug, was not checking against decorated exception (fixed below)
                 # if exception is OSError, and e is FileNotFoundError, this will still catch, so a second check is needed
                 except exception as e:
-                    eprint(
+                    _eprint(
                         f"while True: caught {e=} with {exception=}, checking if its a keeper"
                     )
                     if retry_number >= retries:
