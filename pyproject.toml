@@ -1,0 +1,30 @@
+[build-system]
+requires = [
+    "setuptools>=61.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "retry-on-exception"
+version = "0.1"
+description = "Short explination of what it does _here_"
+authors = [
+    { name = "Justin Keogh", email = "github.com@v6y.net" },
+]
+dependencies = [
+    "delay-timer @ git+https://git@github.com/jakeogh/delay-timer",
+]
+requires-python = ">=3.11"
+
+[project.license]
+text = "ISC"
+
+[project.urls]
+Homepage = "https://github.com/jakeogh/retry-on-exception"
+
+[project.scripts]
+retry-on-exception-test = "retry_on_exception.retry_on_exception_test:cli"
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false

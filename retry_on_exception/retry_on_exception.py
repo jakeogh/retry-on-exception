@@ -16,8 +16,6 @@ from signal import signal
 from asserttool import icp
 from delay_timer import DelayTimer
 
-# import traceback
-
 logging.basicConfig(level=logging.INFO)
 # import errno as error_number
 
@@ -200,7 +198,10 @@ def retry_on_exception(
 
                 if delay_timer:
                     _eprint(
-                        f"{function=}", f"{exception=}", f"{errno=}", f"{in_e_args=}"
+                        f"{function=}",
+                        f"{exception=}",
+                        f"{errno=}",
+                        f"{in_e_args=}",
                     )
                     delay_timer.sleep()
 
