@@ -158,7 +158,7 @@ def retry_on_exception(
                             # T O D O check for: TypeError: argument of type 'MaxRetryError' is not iterable
                             except TypeError as ee:
                                 icp(ee)
-                                pass
+                                # pass
                         if not found:
                             eprint(
                                 f"while True: in_e_args_isinstance check failed {in_e_args_isinstance=} {e.args=}, raising e"
