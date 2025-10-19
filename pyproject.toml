@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "retry-on-exception"
-version = "0.0.1760906065"
+version = "0.0.1760909670"
 description = "Decorator to retry a function on exception"
 authors = [
     { name = "Justin Keogh", email = "github.com@v6y.net" },
@@ -14,10 +14,8 @@ authors = [
 dependencies = [
     "delay-timer @ git+https://git@github.com/jakeogh/delay-timer",
 ]
+license = "ISC"
 requires-python = ">=3.11"
-
-[project.license]
-text = "ISC"
 
 [project.urls]
 Homepage = "https://github.com/jakeogh/retry-on-exception"
