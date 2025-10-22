@@ -5,7 +5,7 @@ backend-path = ["."]
 
 [project]
 name = "retry-on-exception"
-version = "0.0.1761093269"
+version = "0.0.1761093271"
 description = "Decorator to retry a function on exception"
 authors = [
     { name = "Justin Keogh", email = "github.com@v6y.net" },
