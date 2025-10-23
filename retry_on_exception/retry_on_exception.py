@@ -45,7 +45,7 @@ def retry_on_exception(
     retries: float = inf,
     initial_delay: float = 0.0,
     max_delay: float = 100.0,
-    delay_multiplier: float = 0.0,
+    delay_multiplier: float = 1.5,
     errno: int | None = None,
     in_e_args: str | None = None,
     in_e_args_isinstance: type | None = None,
