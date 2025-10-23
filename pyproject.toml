@@ -5,7 +5,7 @@ backend-path = ["."]
 
 [project]
 name = "retry-on-exception"
-version = "0.0.1761192560"
+version = "0.0.1761192961"
 description = "Decorator to retry a function on exception"
 authors = [
     { name = "Justin Keogh", email = "github.com@v6y.net" },
@@ -25,6 +25,6 @@ include-package-data = true
 zip-safe = false
 
 [tool.pep508-url-version-backend]
-dependencies-indexed = ["delay-timer>=0.0.1761192557"]
+dependencies-indexed = ["delay-timer>=0.0.1761192957"]
 dependencies-git = ["delay-timer @ git+https://git@github.com/jakeogh/delay-timer"]
 index-urls = ["jakeogh.github.io", "pip-index"]
