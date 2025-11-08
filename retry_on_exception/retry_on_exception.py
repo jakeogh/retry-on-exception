@@ -13,7 +13,7 @@ from signal import SIG_DFL
 from signal import SIGPIPE
 from signal import signal
 
-from asserttool import icp
+# from asserttool import icp
 from delay_timer import DelayTimer
 
 logging.basicConfig(level=logging.INFO)
@@ -157,7 +157,7 @@ def retry_on_exception(
                                     # icp("found:", arg, in_e_args_isinstance)
                             # T O D O check for: TypeError: argument of type 'MaxRetryError' is not iterable
                             except TypeError as ee:
-                                icp(ee)
+                                eprint(ee)
                                 # pass
                         if not found:
                             eprint(
