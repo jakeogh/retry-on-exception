@@ -4,37 +4,20 @@
 
 from __future__ import annotations
 
-import logging
 import sys
 from collections.abc import Callable
-from functools import wraps  # todo
+from functools import wraps
 from math import inf
-from signal import SIG_DFL
-from signal import SIGPIPE
-from signal import signal
 
-# from asserttool import icp
 from delay_timer import DelayTimer
-
-logging.basicConfig(level=logging.INFO)
-# import errno as error_number
-
-# this should be earlier in the imports, but isort stops working
-signal(SIGPIPE, SIG_DFL)
 
 
 def _eprint(*args, **kwargs) -> None:
-    try:
-        kwargs.pop("file")
-    except KeyError:
-        pass
+    kwargs.pop("file", None)
     print(*args, file=sys.stderr, **kwargs)
 
 
-# comment out return to enable debug output
-def eprint(*args, **kwargs) -> None:
-    return
-    _eprint(*args, **kwargs)
+eprint = _eprint
 
 
 def retry_on_exception(
@@ -54,17 +37,18 @@ def retry_on_exception(
     call_function_once_args=(),
     call_function_once_kwargs={},
 ):
-    delay_timer: DelayTimer | None = None
-    if initial_delay > 0:
-        delay_timer = DelayTimer(
-            start=initial_delay,
-            multiplier=delay_multiplier,
-            end=max_delay,
-        )
-
     def retry_on_exception_decorator(function):
         @wraps(function)
         def retry_on_exception_wrapper(*args, **kwargs):
+            # per-call: backoff state must not leak between calls to the
+            # decorated function
+            delay_timer: DelayTimer | None = None
+            if initial_delay > 0:
+                delay_timer = DelayTimer(
+                    start=initial_delay,
+                    multiplier=delay_multiplier,
+                    end=max_delay,
+                )
             if not issubclass(exception, Exception):
                 raise ValueError(
                     "exception must be a subclass of Exception, not:", type(exception)
