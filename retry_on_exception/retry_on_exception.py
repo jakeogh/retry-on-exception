@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf8 -*-
 # tab-width:4
-
-from __future__ import annotations
 
 import sys
 from collections.abc import Callable
@@ -10,21 +7,16 @@ from functools import wraps
 from math import inf
 
 from delay_timer import DelayTimer
+from globalverbose import gvd
 
 
-def _eprint(*args, **kwargs) -> None:
-    kwargs.pop("file", None)
-    print(*args, file=sys.stderr, **kwargs)
-
-
-eprint = _eprint
+def _eprint(*args) -> None:
+    print(*args, file=sys.stderr)
 
 
 def retry_on_exception(
     *,
     exception: type[Exception],
-    kwargs: dict = {},
-    args: tuple = (),
     retries: float = inf,
     initial_delay: float = 0.0,
     max_delay: float = 100.0,
@@ -33,160 +25,82 @@ def retry_on_exception(
     in_e_args: str | None = None,
     in_e_args_isinstance: type | None = None,
     cancel_retry_function: Callable | None = None,
-    call_function_once=None,  # this could block, like wait_for_ping_default_gateway()
-    call_function_once_args=(),
-    call_function_once_kwargs={},
+    call_function_once: Callable | None = None,
+    call_function_once_args: tuple = (),
+    call_function_once_kwargs: dict | None = None,
 ):
+    """Retry a call while it raises exactly `exception` and the filters match.
+
+    Nothing is printed on a call that does not raise. The decorator wraps every
+    call site of whatever it decorates, so unconditional output scales with
+    call volume rather than with anything going wrong: a clean run of a caller
+    doing one LMDB transaction per record produced 2469 lines of it. Retry
+    activity is reported under gvd, and a give-up always reports.
+    """
+    if not issubclass(exception, Exception):
+        raise ValueError(f"exception must subclass Exception, not {exception!r}")
+    if retries < 1:
+        raise ValueError(f"retries must be >= 1, not {retries!r}")
+
+    once_kwargs = call_function_once_kwargs or {}
+
     def retry_on_exception_decorator(function):
         @wraps(function)
         def retry_on_exception_wrapper(*args, **kwargs):
-            # per-call: backoff state must not leak between calls to the
-            # decorated function
-            delay_timer: DelayTimer | None = None
-            if initial_delay > 0:
-                delay_timer = DelayTimer(
+            # per-call: backoff state must not leak between calls
+            delay_timer = (
+                DelayTimer(
                     start=initial_delay,
                     multiplier=delay_multiplier,
                     end=max_delay,
                 )
-            if not issubclass(exception, Exception):
-                raise ValueError(
-                    "exception must be a subclass of Exception, not:", type(exception)
-                )
-            retry_number = 0
-            if retries < 1:
-                raise ValueError("retries must be >= 1: retries:", retries)
-            # this will print on each application of the decorator if its enabled
-            # _eprint(f"retry_on_exception() {function=} {exception=}")
-            eprint(
-                f"retry_on_exception() {function=}",
-                f"{exception=}",
-                f"{type(exception)=}",
-                f"{kwargs=}",
-                f"{args=}",
-                f"{retry_number=}",
-                f"{retries=}",
-                f"{errno=}",
-                f"{in_e_args=}",
-                f"{in_e_args_isinstance=}",
-                f"{cancel_retry_function=}",
+                if initial_delay > 0
+                else None
             )
+            retry_number = 0
 
             while True:
-                eprint(f"while True: {retry_number=}, {retries=}")
                 try:
-                    eprint(
-                        f"while True: calling and returning: {function.__name__=}",
-                        f"{args=}",
-                        f"{kwargs=}",
-                    )
-                    _result = function(*args, **kwargs)
-                    # icp(_result)
-                    # icp(type(_result))
-                    # return function(*args, **kwargs)
-                    return _result
-                # except exception as e:  # FileNotFoundError gets caught by OSError
-                # oldbug, was not checking against decorated exception (fixed below)
-                # if exception is OSError, and e is FileNotFoundError, this will still catch, so a second check is needed
+                    return function(*args, **kwargs)
                 except exception as e:
-                    _eprint(
-                        f"while True: caught {e=} with {exception=}, checking if its a keeper"
-                    )
+                    # `except` catches subclasses; the contract is this exact type
+                    if type(e) is not exception:
+                        raise
+                    if errno is not None:
+                        if getattr(e, "errno", None) != errno:
+                            raise
+                    if in_e_args is not None:
+                        if not any(in_e_args in repr(arg) for arg in e.args):
+                            raise
+                    if in_e_args_isinstance is not None:
+                        if not any(
+                            isinstance(arg, in_e_args_isinstance) for arg in e.args
+                        ):
+                            raise
                     if retry_number >= retries:
-                        raise e
-                    # make sure it's the exact exception requested
-                    if not type(e) is exception:
-                        eprint(
-                            f"while True: about to raise e because the exception matched, but its not the exact exception requested: {type(e)} {e=} {exception=}"
+                        _eprint(
+                            f"retry_on_exception: {function.__qualname__} gave up "
+                            f"after {retry_number} retries on {e!r}"
                         )
-                        raise e
-                    if errno:
-                        eprint(f"while True: looking for {errno=} in {e=}")
-                        if hasattr(e, "errno"):
-                            if e.errno != errno:
-                                eprint(
-                                    f"while True: errno check failed {errno=}, {e.errno=}, raising e"
-                                )
-                                raise e
-                        else:  # exception does not match, raise it
-                            eprint(
-                                f"while True: errno check failed {errno=} was specified, but {e=} has no errno attribute"
-                            )
-                            raise e
-
-                    if in_e_args:
-                        eprint(f"while True: looking for {in_e_args=} in {e.args=}")
-                        found = False
-                        for arg in e.args:
-                            try:
-                                if in_e_args in repr(arg):
-                                    found = True
-                            except TypeError:
-                                pass
-                        if not found:
-                            eprint(
-                                f"while True: in_e_args check failed {in_e_args=} {e.args=}, raising e"
-                            )
-                            raise e
-
-                    if in_e_args_isinstance:
-                        eprint(
-                            f"while True: looking for {in_e_args_isinstance=} in {e.args=}"
+                        raise
+                    if cancel_retry_function and cancel_retry_function():
+                        _eprint(
+                            f"retry_on_exception: {function.__qualname__} cancelled "
+                            f"on {e!r}"
                         )
-                        found = False
-                        for arg in e.args:
-                            try:
-                                if isinstance(arg, in_e_args_isinstance):
-                                    found = True
-                                    # icp("found:", arg, in_e_args_isinstance)
-                            # T O D O check for: TypeError: argument of type 'MaxRetryError' is not iterable
-                            except TypeError as ee:
-                                eprint(ee)
-                                # pass
-                        if not found:
-                            eprint(
-                                f"while True: in_e_args_isinstance check failed {in_e_args_isinstance=} {e.args=}, raising e"
-                            )
-                            raise e
-
-                    eprint(
-                        f"while True: caught: {e=}, and it passed all checks, not re-raising",
-                        f"{retry_number=}\n",
-                    )
+                        raise
 
                     retry_number += 1
-                    # for index, arg in enumerate(e.args):
-                    #    eprint(f"while True: {index=}", f"{arg=}")
-                    #    # traceback.print_exc()
+                    if gvd:
+                        _eprint(
+                            f"retry_on_exception: {function.__qualname__} "
+                            f"retry {retry_number} after {e!r}"
+                        )
 
-                    # by here, a matching exception, e exists
-                    # if cancel_retry_function() returns True, then raise e (so do not retry the function call again)
-                    if cancel_retry_function:
-                        _result = cancel_retry_function()
-                        if _result:
-                            eprint(
-                                f"cancel_retry_function() returned {_result=}, raising {e=}"
-                            )
-                            raise e
-
-                    if call_function_once:
-                        if retry_number == 1:
-                            call_function_once_result = call_function_once(
-                                *call_function_once_args, **call_function_once_kwargs
-                            )
-                            eprint(f"{call_function_once_result=}")
-
-                except Exception as e:
-                    eprint(f"while True: (uncaught exception) {e=} {type(e)}")
-                    raise e
+                    if call_function_once and retry_number == 1:
+                        call_function_once(*call_function_once_args, **once_kwargs)
 
                 if delay_timer:
-                    _eprint(
-                        f"{function=}",
-                        f"{exception=}",
-                        f"{errno=}",
-                        f"{in_e_args=}",
-                    )
                     delay_timer.sleep()
 
         return retry_on_exception_wrapper
