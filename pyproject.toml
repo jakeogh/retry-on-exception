@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "retry-on-exception"
-version = "1!0.0.1789533505"
+version = "1!0.0.1789730269"
 description = "Decorator to retry a function on exception"
 authors = [
     { name = "Justin Keogh", email = "github.com@v6y.net" },

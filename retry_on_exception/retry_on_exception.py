@@ -7,7 +7,6 @@ from functools import wraps
 from math import inf
 
 from delay_timer import DelayTimer
-from globalverbose import gvd
 
 
 def _eprint(*args) -> None:
@@ -31,11 +30,11 @@ def retry_on_exception(
 ):
     """Retry a call while it raises exactly `exception` and the filters match.
 
-    Nothing is printed on a call that does not raise. The decorator wraps every
-    call site of whatever it decorates, so unconditional output scales with
-    call volume rather than with anything going wrong: a clean run of a caller
-    doing one LMDB transaction per record produced 2469 lines of it. Retry
-    activity is reported under gvd, and a give-up always reports.
+    Nothing is printed on a call that does not raise: the decorator wraps
+    every call site of whatever it decorates, so reporting per call scales
+    with call volume rather than with anything going wrong. A retry, a
+    cancellation and a give-up each report, since each means the call did not
+    succeed on its own.
     """
     if not issubclass(exception, Exception):
         raise ValueError(f"exception must subclass Exception, not {exception!r}")
@@ -91,11 +90,10 @@ def retry_on_exception(
                         raise
 
                     retry_number += 1
-                    if gvd:
-                        _eprint(
-                            f"retry_on_exception: {function.__qualname__} "
-                            f"retry {retry_number} after {e!r}"
-                        )
+                    _eprint(
+                        f"retry_on_exception: {function.__qualname__} "
+                        f"retry {retry_number} after {e!r}"
+                    )
 
                     if call_function_once and retry_number == 1:
                         call_function_once(*call_function_once_args, **once_kwargs)
